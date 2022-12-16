@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:gravity="center"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintDimensionRatio="H,1:1" />
+
+
+    <TextView
+        android:id="@+id/steps_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_edges"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center"
+        android:paddingStart="7dip"
+        android:paddingTop="4dip"
+        android:paddingEnd="10dip"
+        android:paddingBottom="4dip"
+        android:text=""
+        android:textSize="@dimen/step_text_size"
+        android:textStyle="normal|italic"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ScrollView
+        android:id="@+id/descriptionContainer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/step_textblock_height"
+        android:layout_marginStart="@dimen/step_button_sidemargin"
+        android:layout_marginEnd="@dimen/step_button_sidemargin"
+        android:layout_marginBottom="@dimen/step_button_sidemargin"
+        android:background="@drawable/rounded_edges"
+        android:gravity="bottom|center"
+        android:paddingLeft="10dip"
+        android:paddingTop="4dip"
+        android:paddingRight="10dip"
+        android:paddingBottom="4dip"
+        app:layout_constraintBottom_toTopOf="@+id/preview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:textSize="@dimen/step_text_size"
+            android:textStyle="normal|italic" />
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/preview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:tint="@color/black"
+        android:src="@drawable/arrow_back"
+        android:layout_marginStart="@dimen/step_button_sidemargin"
+        android:layout_marginBottom="@dimen/step_button_marginbottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/replay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/step_button_marginbottom"
+        android:src="@drawable/refresh"
+        app:tint="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/arrow_forward"
+        app:tint="@color/black"
+        android:layout_marginEnd="@dimen/step_button_sidemargin"
+        android:layout_marginBottom="@dimen/step_button_marginbottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

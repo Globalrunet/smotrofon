@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/courses"
+    app:startDestination="@+id/coursesContentScreen">
+
+    <fragment
+        android:id="@+id/coursesContentScreen"
+        android:name="com.mobilicos.smotrofon.ui.courses.contenttab.CoursesContentFragment"
+        android:label="@string/menu_item_courses"
+        tools:layout="@layout/lessons_list">
+        <action
+            android:id="@+id/action_coursesLessons_to_coursesLessonInfo"
+            app:destination="@id/coursesLessonInfoScreen"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right">
+            <argument
+                android:name="ident"
+                app:argType="integer"
+                android:defaultValue="0" />
+        </action>
+        <action
+            android:id="@+id/action_localCoursesLessons_to_coursesLessonInfo"
+            app:destination="@id/localCoursesLessonInfoScreen"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right">
+            <argument
+                android:name="ident"
+                app:argType="integer"
+                android:defaultValue="0" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/coursesLessonInfoScreen"
+        android:name="com.mobilicos.smotrofon.ui.courses.lessoninfo.CourseLessonInfoFragment"
+        android:label="@string/menu_item_courses"
+        tools:layout="@layout/lesson_info_fragment" >
+        <argument
+            android:name="ident"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/localCoursesLessonInfoScreen"
+        android:name="com.mobilicos.smotrofon.ui.courses.lessoninfo.CourseLessonInfoFragment"
+        android:label="@string/menu_item_courses"
+        tools:layout="@layout/lesson_info_fragment" >
+        <argument
+            android:name="ident"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+</navigation>

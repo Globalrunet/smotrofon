@@ -1,0 +1,27 @@
+<resources>
+    <dimen name="text_margin">16dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="fragment_horizontal_margin">16dp</dimen>
+    <dimen name="fragment_vertical_margin">16dp</dimen>
+    <dimen name="app_bar_height">240dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Custom project dimensions -->
+    <dimen name="list_icon_height">80dp</dimen>
+    <dimen name="list_icon_width">80dp</dimen>
+    <dimen name="list_header_textsize">26sp</dimen>
+    <dimen name="list_firstline_textsize">22sp</dimen>
+    <dimen name="list_secondline_textsize">16sp</dimen>
+    <dimen name="step_image_height">600dp</dimen>
+    <dimen name="step_text_size">16sp</dimen>
+    <dimen name="step_image_margintop">65dp</dimen>
+    <dimen name="step_button_marginbottom">30dp</dimen>
+    <dimen name="step_textblock_marginbottom">130dp</dimen>
+    <dimen name="step_textblock_height">160dp</dimen>
+    <dimen name="step_button_sidemargin">20dp</dimen>
+    <dimen name="button_rounded_radius">40dp</dimen>
+    <dimen name="button_size">60dp</dimen>
+    <dimen name="list_row_vertical_spacing">12dp</dimen>
+    <dimen name="bunner_height">50dp</dimen>
+    <dimen name="description_textsize">16dp</dimen>
+</resources>

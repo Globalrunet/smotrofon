@@ -1,0 +1,135 @@
+<resources>
+    <string name="app_name">Video Audio Creativity</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="videoviewer_video_description">Views %1$d! / Posted by %2$s.</string>
+    <string name="bottom_sheet_dialog_header">Description</string>
+    <string name="subscribe_title">SUBSCRIBE</string>
+    <string name="videos">Videos</string>
+    <string name="audio">Audio</string>
+    <string name="courses_lessons">Courses and Lessons</string>
+    <string name="search_label">Search</string>
+    <string name="search_hint">Video Search</string>
+    <string name="datset_is_empty">Unfortunately there is nothing</string>
+    <string name="fragment_under_construction">The section is under construction. The functionality will be ready soon!</string>
+    <string name="menu_item_media">Media</string>
+    <string name="menu_item_rate">Rate App</string>
+    <string name="menu_item_share">Share App</string>
+    <string name="menu_item_channels">Channels</string>
+    <string name="menu_item_messages">Chat</string>
+    <string name="menu_item_profile">Profile</string>
+    <string name="menu_item_courses">Courses</string>
+    <string name="menu_item_war">Lessons</string>
+    <string name="content_channel_icon">Channel Icon</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Username or email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_registration">Register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="invalid_email">Invalid username or email</string>
+    <string name="invalid_password">Invalid password</string>
+    <string name="login_error">Invalid password and username</string>
+    <string name="login_error_other">An error occurred while logging in</string>
+    <string name="login_success">You are logged in</string>
+    <string name="videos_count">Videos: %1$d</string>
+    <string name="audios_count">Audio: %1$d</string>
+    <string name="courses_lessons_count">Lessons: %1$d / %2$d</string>
+    <string name="begin_lesson">Go to lesson</string>
+    <string name="lessons_list_views_count">Views: %1$d</string>
+    <string name="lessons_list_added_date">Added: %1$s</string>
+    <string name="lesson_steo_of_steps">%1$d of %2$d</string>
+    <string name="courses_tab_title_all_items">All lessons</string>
+    <string name="courses_tab_title_local_items">Local lessons</string>
+    <string name="query_hint_lesson_search">Search Lesson</string>
+
+    <string name="registration_form_firstname">First name</string>
+    <string name="registration_form_lastname">Last name</string>
+    <string name="registration_form_email">Email</string>
+    <string name="registration_form_password">Password</string>
+
+    <string name="profile_video_list_add_video_button">Add video</string>
+    <string name="dialog_remove_video_title">Remove video?</string>
+    <string name="dialog_remove_negative_button_title">Cancel</string>
+    <string name="dialog_remove_positive_button_title">Remove</string>
+    <string name="remove_video_error">An error occurred while removing data</string>
+    <string name="remove_video_success">Data removed successfully</string>
+    <string name="edit_video_title">Title</string>
+    <string name="edit_video_text">Description</string>
+    <string name="edit_video_save_error">An error occurred while saving data</string>
+    <string name="edit_video_save_success">Data saved successfully</string>
+    <string name="save_button">Save</string>
+    <string name="edit_video_invalid_title">Invalid title</string>
+    <string name="edit_video_invalid_text">Invalid text</string>
+    <string name="select_video_to_upload">Select video to upload</string>
+    <string name="video_to_upload_loading">Video is loading…</string>
+    <string name="video_to_upload_loaded">Video loaded</string>
+    <string name="video_to_upload_loading_error">Video loading error</string>
+    <string name="select_poster_to_upload">Select image to upload</string>
+    <string name="poster_to_upload_loading">Poster is loading…</string>
+    <string name="poster_to_upload_loaded">Poster loaded</string>
+    <string name="poster_to_upload_loading_error">Poster loading error</string>
+    <string name="new_video_title">New video</string>
+
+    <string name="profile_audio_list_add_audio_button">Add audio</string>
+    <string name="dialog_remove_audio_title">Remove audio?</string>
+    <string name="remove_audio_error">An error occurred while removing data</string>
+    <string name="remove_audio_success">Data removed successfully</string>
+    <string name="edit_audio_title">Title</string>
+    <string name="edit_audio_text">Description</string>
+    <string name="edit_audio_save_error">An error occurred while saving data</string>
+    <string name="edit_audio_save_success">Data saved successfully</string>
+    <string name="edit_audio_invalid_title">Invalid title</string>
+    <string name="edit_audio_invalid_text">Invalid text</string>
+    <string name="select_audio_to_upload">Select audio to upload</string>
+    <string name="audio_to_upload_loading">Audio is loading…</string>
+    <string name="audio_to_upload_loaded">Audio loaded</string>
+    <string name="audio_to_upload_loading_error">Audio loading error</string>
+    <string name="new_audio_title">New audio</string>
+
+    <string name="logout_button_title">Logout</string>
+
+    <string name="fragment_title_video_list">Me video</string>
+    <string name="fragment_title_edit_video">Edit video</string>
+    <string name="fragment_title_add_video">Add video</string>
+    <string name="fragment_title_audio_list">My audio</string>
+    <string name="fragment_title_edit_audio">Edit audio</string>
+    <string name="fragment_title_add_audio">Add audio</string>
+    <string name="fragment_title_profile_settings">Settings</string>
+
+    <string name="profile_settings_action_title_videos">My Videos</string>
+    <string name="profile_settings_action_title_audios">My Audios</string>
+    <string name="profile_settings_action_title_settings">Profile Settings</string>
+    <string name="profile_settings_invalid_firstname">Incorrect first name (4–16 characters)</string>
+    <string name="profile_settings_invalid_lastname">Incorrect last name (4–16 characters)</string>
+    <string name="profile_settings_invalid_password">Incorrect password (6–16 characters)</string>
+
+    <string name="bottom_sheet_dialog_header_select_project">Select project</string>
+
+    <string name="project_all">All lessons</string>
+    <string name="project_origami">How to make Origami</string>
+    <string name="project_paperplanes">How to make Paper Planes</string>
+    <string name="project_knots">How to tie Knots</string>
+    <string name="project_howtodraw">How to Draw</string>
+    <string name="project_recipes">Recipes</string>
+    <string name="project_fitness">Fitness</string>
+
+    <string name="share_app_title">Share App Smotrofon – 3D creativity, Video, Audio - Apps on Google Play</string>
+
+    <string-array name="projects">
+        <item>@string/project_all</item>
+        <item>@string/project_origami</item>
+        <item>@string/project_paperplanes</item>
+        <item>@string/project_knots</item>
+        <item>@string/project_howtodraw</item>
+        <item>@string/project_recipes</item>
+        <item>@string/project_fitness</item>
+    </string-array>
+
+    <string name="bottom_sheet_button_text">Share</string>
+    <string name="bottom_sheet_promo_text">Share the link to the app on social networks and get full access to all lessons without ads.</string>
+    <string name="bottom_sheet_promo_button_text">Share</string>
+    <string name="bottom_sheet_promo_title">Disable Ads</string>
+    <string name="login_divider_text">If there is no account, then</string>
+</resources>

@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.mobilicos.smotrofon",
+  "variantName": "release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 6,
+      "versionName": "1.6",
+      "outputFile": "com.mobilicos.smotrofon_release_1.6.apk"
+    }
+  ],
+  "elementType": "File"
+}

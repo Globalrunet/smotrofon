@@ -20,8 +20,6 @@ class CommentsListFragment : BottomSheetDialogFragment() {
     lateinit var binding: BottomSheetLayoutBinding
     override fun getTheme() = R.style.AppBottomSheetDialogTheme
 
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = BottomSheetLayoutBinding.inflate(layoutInflater, container, false)

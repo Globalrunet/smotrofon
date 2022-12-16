@@ -132,4 +132,6 @@
     <string name="bottom_sheet_promo_button_text">Поделиться</string>
     <string name="bottom_sheet_promo_title">Отключить рекламу</string>
     <string name="login_divider_text">Если нет аккаунта, то</string>
+
+    <string name="fragment_layout_comments_header">Комментарии: %1$d</string>
 </resources>

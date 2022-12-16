@@ -132,4 +132,6 @@
     <string name="bottom_sheet_promo_button_text">Share</string>
     <string name="bottom_sheet_promo_title">Disable Ads</string>
     <string name="login_divider_text">If there is no account, then</string>
+
+    <string name="fragment_layout_comments_header">Comments: %1$d</string>
 </resources>

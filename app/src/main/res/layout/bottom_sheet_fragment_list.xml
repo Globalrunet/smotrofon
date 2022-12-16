@@ -13,20 +13,15 @@
 
     <FrameLayout
         android:id="@+id/bottom_sheet"
-        style="@style/Widget.Material3.BottomSheet"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/white"
         android:layout_margin="0dip"
-        android:padding="0dip"
-        android:visibility="gone"
-        app:behavior_skipCollapsed="false"
-        app:behavior_hideable="true"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        android:padding="0dip">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="0dip"
             android:padding="0dip">
             <com.google.android.material.bottomsheet.BottomSheetDragHandleView

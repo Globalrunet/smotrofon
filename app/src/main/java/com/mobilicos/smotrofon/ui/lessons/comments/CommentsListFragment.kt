@@ -1,70 +1,55 @@
 package com.mobilicos.smotrofon.ui.lessons.comments
 
-import android.content.res.Resources
+import android.app.Activity
+import android.app.Dialog
+import android.content.DialogInterface.OnShowListener
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.FrameLayout
-import androidx.lifecycle.ViewModelProvider
-import com.mobilicos.smotrofon.R
-import com.mobilicos.smotrofon.databinding.BottomSheetLayoutBinding
-import com.mobilicos.smotrofon.ui.viewmodels.MediaViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.mobilicos.smotrofon.R
+import com.mobilicos.smotrofon.databinding.BottomSheetFragmentListBinding
 
 
 class CommentsListFragment : BottomSheetDialogFragment() {
 
-    lateinit var binding: BottomSheetLayoutBinding
+    lateinit var binding: BottomSheetFragmentListBinding
     override fun getTheme() = R.style.AppBottomSheetDialogTheme
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
-        binding = BottomSheetLayoutBinding.inflate(layoutInflater, container, false)
+        binding = BottomSheetFragmentListBinding.inflate(layoutInflater, container, false)
 
-        val video = ViewModelProvider(requireActivity())[MediaViewModel::class.java].getSelected().value!!
-
-        binding.title.text = video.title
-        binding.description.text = video.text
-        binding.iconClearDown.setOnClickListener {
-            dialog?.hide()
-            dialog?.dismiss()
-        }
-
-        dialog?.setOnShowListener {
-            val height: Int = Resources.getSystem().displayMetrics.heightPixels
-            val dialog = it as BottomSheetDialog
-            val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout
-            val behavior = BottomSheetBehavior.from(bottomSheet)
-            behavior.maxHeight = height
-            behavior.peekHeight = height*50/100
-            behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        }
 
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = BottomSheetDialog(requireContext(), theme)
+        dialog.setOnShowListener {
 
-        dialog?.let {
-            val bottomSheet = it.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout
-            val behavior = BottomSheetBehavior.from(bottomSheet)
-
-            behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                        dismiss()
-                    }
-                }
-
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                    binding.iconClearDown.rotation = slideOffset * 180
-                }
-            })
+            val bottomSheetDialog = it as BottomSheetDialog
+            val parentLayout =
+                bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            parentLayout?.let { it ->
+                val behaviour = BottomSheetBehavior.from(it)
+                setupFullHeight(it)
+                behaviour.state = BottomSheetBehavior.STATE_EXPANDED
+            }
         }
+        return dialog
     }
+
+    private fun setupFullHeight(bottomSheet: View) {
+        val layoutParams = bottomSheet.layoutParams
+        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
+        bottomSheet.layoutParams = layoutParams
+    }
+
 }

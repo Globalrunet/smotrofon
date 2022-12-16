@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.*
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.ConfigurationCompat
 import androidx.fragment.app.Fragment
@@ -12,10 +11,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.badge.BadgeDrawable
-import com.google.android.material.badge.BadgeUtils
 import com.mobilicos.smotrofon.databinding.LessonInfoFragmentBinding
 import com.mobilicos.smotrofon.model.Result
+import com.mobilicos.smotrofon.ui.lessons.comments.CommentsListFragment
 import com.mobilicos.smotrofon.util.FileUtil
 import com.mobilicos.smotrofon.util.visible
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,7 +70,8 @@ class LessonInfoFragment : Fragment() {
 
         binding.comments.count = 0
         binding.comments.setOnClickListener {
-            binding.comments.increase()
+            val commentsFragment = CommentsListFragment()
+            commentsFragment.show(requireActivity().supportFragmentManager, commentsFragment.tag)
         }
 
         binding.like.count = 3

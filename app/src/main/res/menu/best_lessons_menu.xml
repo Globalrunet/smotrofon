@@ -1,0 +1,22 @@
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/share"
+        android:title="@string/menu_item_share"
+        android:icon="@drawable/share"
+        app:showAsAction="ifRoom" />
+    <item android:id="@+id/rate"
+        android:title="@string/menu_item_rate"
+        android:icon="@drawable/star"
+        app:showAsAction="ifRoom" />
+    <item android:id="@+id/tune"
+        android:title="@string/menu_item_media"
+        android:icon="@drawable/tune"
+        app:queryHint="@string/query_hint_lesson_search"
+        app:showAsAction="always" />
+    <item android:id="@+id/search"
+        android:title="@string/menu_item_media"
+        android:icon="@mipmap/outline_search_black_24"
+        app:actionViewClass="android.widget.SearchView"
+        app:queryHint="@string/query_hint_lesson_search"
+        app:showAsAction="always" />
+</menu>

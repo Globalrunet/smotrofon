@@ -1,0 +1,9 @@
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/search"
+        android:title="@string/menu_item_media"
+        android:icon="@mipmap/outline_search_black_24"
+        app:actionViewClass="android.widget.SearchView"
+        app:queryHint="@string/query_hint_lesson_search"
+        app:showAsAction="always" />
+</menu>

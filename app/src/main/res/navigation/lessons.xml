@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019, The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lessons"
+    app:startDestination="@+id/lessonsScreen">
+
+    <fragment
+        android:id="@+id/lessonsScreen"
+        android:name="com.mobilicos.smotrofon.ui.lessons.contenttab.LessonsContentFragment"
+        android:label="@string/menu_item_courses"
+        tools:layout="@layout/lessons_list">
+        <action
+            android:id="@+id/action_lessons_to_lessonInfo"
+            app:destination="@id/lessonInfoScreen"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right">
+            <argument
+                android:name="ident"
+                app:argType="integer"
+                android:defaultValue="0" />
+        </action>
+        <action
+            android:id="@+id/action_localLessons_to_lessonInfo"
+            app:destination="@id/localLessonInfoScreen"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right">
+            <argument
+                android:name="ident"
+                app:argType="integer"
+                android:defaultValue="0" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/lessonInfoScreen"
+        android:name="com.mobilicos.smotrofon.ui.lessons.lessoninfo.LessonInfoFragment"
+        android:label="@string/menu_item_courses"
+        tools:layout="@layout/lesson_info_fragment" >
+        <argument
+            android:name="ident"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_lessonInfo_to_stepsInfo"
+            app:destination="@id/stepsInfoScreen"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right">
+            <argument
+                android:name="ident"
+                app:argType="integer"
+                android:defaultValue="0" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/localLessonInfoScreen"
+        android:name="com.mobilicos.smotrofon.ui.lessons.lessoninfo.LessonInfoFragment"
+        android:label="@string/menu_item_courses"
+        tools:layout="@layout/lesson_info_fragment" >
+        <argument
+            android:name="ident"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_lessonInfo_to_stepsInfo"
+            app:destination="@id/stepsInfoScreen"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right">
+            <argument
+                android:name="ident"
+                app:argType="integer"
+                android:defaultValue="0" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/stepsInfoScreen"
+        android:name="com.mobilicos.smotrofon.ui.lessons.stepsinfo.StepsInfoFragment"
+        android:label="@string/menu_item_profile"
+        tools:layout="@layout/fragment_steps_info" >
+        <argument
+            android:name="ident"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+</navigation>

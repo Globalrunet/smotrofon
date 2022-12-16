@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019, The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile"
+    app:startDestination="@+id/profileScreen">
+
+    <fragment
+        android:id="@+id/profileScreen"
+        android:name="com.mobilicos.smotrofon.ui.user.profile.ProfileFragment"
+        android:label="@string/menu_item_profile"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profile_to_login"
+            app:destination="@id/loginScreen"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right"/>
+
+        <action
+            android:id="@+id/action_profile_to_videolist"
+            app:destination="@id/videolistScreen"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right"/>
+
+        <action
+            android:id="@+id/action_profile_to_audiolist"
+            app:destination="@id/audioListScreen"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right"/>
+
+        <action
+            android:id="@+id/action_profile_to_settings"
+            app:destination="@id/profileSettingsScreen"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginScreen"
+        android:name="com.mobilicos.smotrofon.ui.user.login.LoginUserFragment"
+        android:label="@string/menu_item_profile"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_login_to_registration"
+            app:destination="@id/registrationScreen"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/registrationScreen"
+        android:name="com.mobilicos.smotrofon.ui.user.registration.RegistrationUserFragment"
+        android:label="@string/menu_item_profile"
+        tools:layout="@layout/fragment_registration" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/videolistScreen"
+        android:name="com.mobilicos.smotrofon.ui.user.video.list.ProfileVideoListFragment"
+        android:label="@string/fragment_title_video_list"
+        tools:layout="@layout/fragment_registration" >
+
+        <action
+            android:id="@+id/action_videoList_to_videoEdit"
+            app:destination="@id/editVideoScreen"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right">
+            <argument
+                android:name="id"
+                app:argType="integer"
+                android:defaultValue="0" />
+        </action>
+
+        <action
+            android:id="@+id/action_videoList_to_addVideo"
+            app:destination="@id/addVideoScreen"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right">
+            <argument
+                android:name="id"
+                app:argType="integer"
+                android:defaultValue="0" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/editVideoScreen"
+        android:name="com.mobilicos.smotrofon.ui.user.video.edit.EditVideoFragment"
+        android:label="@string/fragment_title_edit_video"
+        tools:layout="@layout/fragment_registration" >
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addVideoScreen"
+        android:name="com.mobilicos.smotrofon.ui.user.video.add.AddVideoFragment"
+        android:label="@string/fragment_title_add_video"
+        tools:layout="@layout/fragment_registration" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/audioListScreen"
+        android:name="com.mobilicos.smotrofon.ui.user.audio.list.ProfileAudioListFragment"
+        android:label="@string/fragment_title_audio_list"
+        tools:layout="@layout/fragment_registration" >
+
+        <action
+            android:id="@+id/action_audioList_to_audioEdit"
+            app:destination="@id/editAudioScreen"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right">
+            <argument
+                android:name="id"
+                app:argType="integer"
+                android:defaultValue="0" />
+        </action>
+
+        <action
+            android:id="@+id/action_audioList_to_addAudio"
+            app:destination="@id/addAudioScreen"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right">
+            <argument
+                android:name="id"
+                app:argType="integer"
+                android:defaultValue="0" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/editAudioScreen"
+        android:name="com.mobilicos.smotrofon.ui.user.audio.edit.EditAudioFragment"
+        android:label="@string/fragment_title_edit_audio"
+        tools:layout="@layout/fragment_registration" >
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addAudioScreen"
+        android:name="com.mobilicos.smotrofon.ui.user.audio.add.AddAudioFragment"
+        android:label="@string/fragment_title_add_audio"
+        tools:layout="@layout/fragment_registration" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileSettingsScreen"
+        android:name="com.mobilicos.smotrofon.ui.user.settings.SettingsFragment"
+        android:label="@string/fragment_title_profile_settings"
+        tools:layout="@layout/fragment_registration" >
+    </fragment><action android:id="@+id/action_global_profileSettingsScreen" app:destination="@id/profileSettingsScreen"/>
+</navigation>

@@ -1,0 +1,135 @@
+<resources>
+    <string name="app_name">Видео Аудио Творчество</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="videoviewer_video_description">Просмотров, %1$d! / Опубликовано %2$s.</string>
+    <string name="bottom_sheet_dialog_header">Описание</string>
+    <string name="subscribe_title">ПОДПИСАТЬСЯ</string>
+    <string name="videos">Видео</string>
+    <string name="audio">Аудио</string>
+    <string name="courses_lessons">Курсы и уроки</string>
+    <string name="search_label">Поиск</string>
+    <string name="search_hint">Поиск видео</string>
+    <string name="datset_is_empty">К сожалению ничего нет</string>
+    <string name="fragment_under_construction">Раздел находится в разработке. Скоро функционал будет готов!</string>
+    <string name="menu_item_media">Медиа</string>
+    <string name="menu_item_channels">Каналы</string>
+    <string name="menu_item_messages">Чат</string>
+    <string name="menu_item_profile">Профиль</string>
+    <string name="menu_item_courses">Курсы</string>
+    <string name="menu_item_war">Бойцу</string>
+    <string name="menu_item_rate">Оценить</string>
+    <string name="menu_item_share">Поделиться</string>
+    <string name="content_channel_icon">Иконка канала</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Имя пользователя или e-mail</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="action_sign_in">Войти</string>
+    <string name="action_registration">Регистрация</string>
+    <string name="action_sign_in_short">Войти</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="invalid_email">Некорректное имя пользователя или e-mail</string>
+    <string name="invalid_password">Некорректный пароль</string>
+    <string name="login_error">Неверный пароль иши имя пользователя</string>
+    <string name="login_error_other">Произошла ошибка при входе в систему</string>
+    <string name="login_success">Вы вошли в систему</string>
+    <string name="videos_count">Видео: %1$d</string>
+    <string name="audios_count">Аудио: %1$d</string>
+    <string name="courses_lessons_count">Уроков: %1$d / %2$d</string>
+    <string name="begin_lesson">Перейти к уроку</string>
+    <string name="lessons_list_views_count">Просмотров: %1$d</string>
+    <string name="lessons_list_added_date">Добавлено: %1$s</string>
+    <string name="lesson_steo_of_steps">%1$d из %2$d</string>
+    <string name="courses_tab_title_all_items">Все уроки</string>
+    <string name="courses_tab_title_local_items">Локальные уроки</string>
+    <string name="query_hint_lesson_search">Поиск урока</string>
+
+    <string name="registration_form_firstname">Имя</string>
+    <string name="registration_form_lastname">Фамилия</string>
+    <string name="registration_form_email">Email</string>
+    <string name="registration_form_password">Пароль</string>
+
+    <string name="profile_video_list_add_video_button">Добавить видео</string>
+    <string name="dialog_remove_video_title">Удалить видео?</string>
+    <string name="dialog_remove_negative_button_title">Отмена</string>
+    <string name="dialog_remove_positive_button_title">Удалить</string>
+    <string name="remove_video_error">Произошла ошибка при удалении видео</string>
+    <string name="remove_video_success">Видео успешно удалено</string>
+    <string name="edit_video_title">Название</string>
+    <string name="edit_video_text">Описание</string>
+    <string name="edit_video_save_error">Произошла ошибка при сохранени данных</string>
+    <string name="edit_video_save_success">Данные успешно сохранены</string>
+    <string name="save_button">Сохранить</string>
+    <string name="edit_video_invalid_title">Некорректный заголовок</string>
+    <string name="edit_video_invalid_text">Некорректное описание</string>
+    <string name="select_video_to_upload">Выберите видео для загрузки</string>
+    <string name="video_to_upload_loading">Идет загрузка…</string>
+    <string name="video_to_upload_loaded">Видео загружено</string>
+    <string name="video_to_upload_loading_error">Ошибка загрузки видео</string>
+    <string name="select_poster_to_upload">Выберите изображение для загрузки</string>
+    <string name="poster_to_upload_loading">Идет загрузка…</string>
+    <string name="poster_to_upload_loaded">Изображение загружено</string>
+    <string name="poster_to_upload_loading_error">Ошибка загрузки изображения</string>
+    <string name="new_video_title">Новое видео</string>
+
+    <string name="profile_audio_list_add_audio_button">Добавить аудио</string>
+    <string name="dialog_remove_audio_title">Удалить аудио?</string>
+    <string name="remove_audio_error">Произошла ошибка при удалении аудио</string>
+    <string name="remove_audio_success">Аудио успешно удалено</string>
+    <string name="edit_audio_title">Название</string>
+    <string name="edit_audio_text">Описание</string>
+    <string name="edit_audio_save_error">Произошла ошибка при сохранени данных</string>
+    <string name="edit_audio_save_success">Данные успешно сохранены</string>
+    <string name="edit_audio_invalid_title">Некорректный заголовок</string>
+    <string name="edit_audio_invalid_text">Некорректное описание</string>
+    <string name="select_audio_to_upload">Выберите аудио для загрузки</string>
+    <string name="audio_to_upload_loading">Идет загрузка…</string>
+    <string name="audio_to_upload_loaded">Аудио загружено</string>
+    <string name="audio_to_upload_loading_error">Ошибка загрузки аудио</string>
+    <string name="new_audio_title">Новое аудио</string>
+
+    <string name="logout_button_title">Выйти</string>
+
+    <string name="fragment_title_video_list">Мои видео</string>
+    <string name="fragment_title_edit_video">Изменить описание</string>
+    <string name="fragment_title_add_video">Добавить видео</string>
+    <string name="fragment_title_audio_list">Мои аудио</string>
+    <string name="fragment_title_edit_audio">Изменить описание</string>
+    <string name="fragment_title_add_audio">Добавить аудио</string>
+    <string name="fragment_title_profile_settings">Настройки</string>
+
+    <string name="profile_settings_action_title_videos">Мои видео</string>
+    <string name="profile_settings_action_title_audios">Мои аудио</string>
+    <string name="profile_settings_action_title_settings">Настройки аккаунта</string>
+    <string name="profile_settings_invalid_firstname">Некорректное имя (4–16 символов)</string>
+    <string name="profile_settings_invalid_lastname">Некорректная фамилия (4–16 символов)</string>
+    <string name="profile_settings_invalid_password">Некорректный пароль (6–16 символов)</string>
+
+    <string name="bottom_sheet_dialog_header_select_project">Выберите раздел</string>
+
+    <string name="project_all">Все уроки</string>
+    <string name="project_origami">Как делать оригами</string>
+    <string name="project_paperplanes">Как делать бумажные самолеты</string>
+    <string name="project_knots">Как завязывать узлы</string>
+    <string name="project_howtodraw">Как рисовать</string>
+    <string name="project_recipes">Кулинарные рецепты</string>
+    <string name="project_fitness">Фитнесс</string>
+
+    <string name="share_app_title">Поделиться приложением Smotrofon – 3D творчество, Видео, Аудио - на Google Play</string>
+
+    <string-array name="projects">
+        <item>@string/project_all</item>
+        <item>@string/project_origami</item>
+        <item>@string/project_paperplanes</item>
+        <item>@string/project_knots</item>
+        <item>@string/project_howtodraw</item>
+        <item>@string/project_recipes</item>
+        <item>@string/project_fitness</item>
+    </string-array>
+
+    <string name="bottom_sheet_button_text">Поделиться</string>
+    <string name="bottom_sheet_promo_text">Поделись ссылкой на приложение в соцсети и получи полный доступ ко всем урокам без рекламы.</string>
+    <string name="bottom_sheet_promo_button_text">Поделиться</string>
+    <string name="bottom_sheet_promo_title">Отключить рекламу</string>
+    <string name="login_divider_text">Если нет аккаунта, то</string>
+</resources>

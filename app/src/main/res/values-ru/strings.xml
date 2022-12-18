@@ -134,4 +134,6 @@
     <string name="login_divider_text">Если нет аккаунта, то</string>
 
     <string name="fragment_layout_comments_header">Комментарии: %1$d</string>
+    <string name="comments_add_comment_title">Добавить комментарий</string>
+    <string name="comments_add_comment_hint">Введите текст комментария</string>
 </resources>

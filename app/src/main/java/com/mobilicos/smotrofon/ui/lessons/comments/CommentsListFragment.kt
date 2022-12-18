@@ -35,6 +35,8 @@ import com.mobilicos.smotrofon.ui.courses.contenttab.CoursesContentViewModel
 import com.mobilicos.smotrofon.ui.courses.lessonslist.CoursesLessonsListAdapter
 import com.mobilicos.smotrofon.ui.courses.lessonslist.CoursesLessonsListViewModel
 import com.mobilicos.smotrofon.util.CircleTransform
+import com.mobilicos.smotrofon.util.setViewOnTouchListener
+import com.mobilicos.smotrofon.util.showKeyboard
 import com.mobilicos.smotrofon.util.visible
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,62 +52,60 @@ class CommentsListFragment : BottomSheetDialogFragment() {
     private var sharedPref: SharedPreferences? = null
     private var userId: Int = 0
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-
-        binding = BottomSheetFragmentListBinding.inflate(layoutInflater, container, false)
-        binding.header.text = requireContext().getString(R.string.fragment_layout_comments_header, 123)
-
-        binding.addCommentTextLabel.setOnClickListener {
-            val bottomSheetDialog =  BottomSheetDialog(requireContext())
-            bottomSheetDialog.setContentView(R.layout.bottom_sheet_add_comment)
-            val behavior = bottomSheetDialog.behavior
-            val icon = bottomSheetDialog.findViewById<ImageView>(R.id.addCommentUserIcon)
-            val send = bottomSheetDialog.findViewById<ImageButton>(R.id.send)
-            val comment = bottomSheetDialog.findViewById<TextInputEditText>(R.id.addComment)
-
-            if (userId > 0) {
-                Picasso.get()
-                    .load(sharedPref!!.getString("user_icon", "")).transform(CircleTransform())
-                    .into(icon)
-            }
-
-            comment?.setOnTouchListener { v, event ->
-                v.parent.requestDisallowInterceptTouchEvent(true)
-                when (event.action and MotionEvent.ACTION_MASK) {
-                    MotionEvent.ACTION_UP -> v.parent.requestDisallowInterceptTouchEvent(false)
-                }
-
-                false
-            }
-
-            behavior.isDraggable = false
-
-            bottomSheetDialog.show()
-        }
-
         sharedPref?.let {
             userId = it.getInt("user_id", 0)
         }
 
+        binding = BottomSheetFragmentListBinding.inflate(layoutInflater, container, false)
+
+        with (binding) {
+            header.text = requireContext().getString(R.string.fragment_layout_comments_header, 123)
+            addCommentTextLabel.setOnClickListener {
+                setAddComment()
+            }
+
+            if (userId > 0) {
+                Picasso.get()
+                    .load(sharedPref!!.getString("user_icon", "")).transform(CircleTransform())
+                    .into(userIcon)
+            }
+
+            iconClearDown.setOnClickListener {
+                dialog?.hide()
+                dialog?.dismiss()
+            }
+
+            setQuery()
+            setSwipeRefreshAdapter()
+            lessonsDataSet()
+
+            return root
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun setAddComment() {
+        val bottomSheetDialog =  BottomSheetDialog(requireContext())
+        bottomSheetDialog.setContentView(R.layout.bottom_sheet_add_comment)
+        val behavior = bottomSheetDialog.behavior
+        val icon = bottomSheetDialog.findViewById<ImageView>(R.id.addCommentUserIcon)
+        val send = bottomSheetDialog.findViewById<ImageButton>(R.id.send)
+        val comment = bottomSheetDialog.findViewById<TextInputEditText>(R.id.addComment)
+
         if (userId > 0) {
             Picasso.get()
                 .load(sharedPref!!.getString("user_icon", "")).transform(CircleTransform())
-                .into(binding.userIcon)
+                .into(icon)
         }
 
-        binding.iconClearDown.setOnClickListener {
-            dialog?.hide()
-            dialog?.dismiss()
-        }
-
-        setQuery()
-        setSwipeRefreshAdapter()
-        lessonsDataSet()
-
-
-        return binding.root
+        comment?.setViewOnTouchListener()
+//        comment?.requestFocus()
+//        comment?.showKeyboard()
+        behavior.isDraggable = false
+        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        bottomSheetDialog.show()
     }
 
     fun setQuery() {

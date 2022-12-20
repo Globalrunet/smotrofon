@@ -2,6 +2,7 @@ package com.mobilicos.smotrofon.data.remote
 
 import com.mobilicos.smotrofon.data.queries.*
 import com.mobilicos.smotrofon.data.responses.CommentAddResponse
+import com.mobilicos.smotrofon.data.responses.CommentRemoveResponse
 import com.mobilicos.smotrofon.model.Result
 import com.mobilicos.smotrofon.network.services.CommentService
 import retrofit2.Retrofit
@@ -18,6 +19,13 @@ class CommentRemoteDataSource @Inject constructor(private val retrofit: Retrofit
                 key = q.key,
                 parent_id = q.parent_id,
                 text = q.text) },
+            defaultErrorMessage = "Error fetching Movie list")
+    }
+
+    suspend fun removeCommentData(q: CommentsRemoveQuery): Result<CommentRemoveResponse> {
+        val service = retrofit.create(CommentService::class.java)
+        return getResponse(
+            request = { service.removeCommentData(comment_id = q.comment_id, key = q.key) },
             defaultErrorMessage = "Error fetching Movie list")
     }
 }

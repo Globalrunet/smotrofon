@@ -27,23 +27,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.mobilicos.smotrofon.R
+import com.mobilicos.smotrofon.data.models.Comment
 import com.mobilicos.smotrofon.databinding.BottomSheetFragmentListBinding
 import com.mobilicos.smotrofon.databinding.LessonsListBinding
+import com.mobilicos.smotrofon.model.Result
 import com.mobilicos.smotrofon.ui.courses.contenttab.CoursesContentViewModel
 import com.mobilicos.smotrofon.ui.courses.lessonslist.CoursesLessonsListAdapter
 import com.mobilicos.smotrofon.ui.courses.lessonslist.CoursesLessonsListViewModel
-import com.mobilicos.smotrofon.util.CircleTransform
-import com.mobilicos.smotrofon.util.setViewOnTouchListener
-import com.mobilicos.smotrofon.util.showKeyboard
-import com.mobilicos.smotrofon.util.visible
+import com.mobilicos.smotrofon.util.*
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
-class CommentsListFragment : BottomSheetDialogFragment() {
+class CommentsListFragment : BottomSheetDialogFragment(), CommentsInterface {
 
     private var commentsListAdapter: CommentsListAdapter? = null
     lateinit var binding: BottomSheetFragmentListBinding
@@ -51,10 +52,13 @@ class CommentsListFragment : BottomSheetDialogFragment() {
     private val commentsListViewModel: CommentsListViewMode by viewModels()
     private var sharedPref: SharedPreferences? = null
     private var userId: Int = 0
+    private var userKey: String = ""
+    private var addCommentDialog: BottomSheetDialog? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         sharedPref?.let {
+            userKey = it.getString("key", "").toString()
             userId = it.getInt("user_id", 0)
         }
 
@@ -80,6 +84,8 @@ class CommentsListFragment : BottomSheetDialogFragment() {
             setQuery()
             setSwipeRefreshAdapter()
             lessonsDataSet()
+            addCommentCollect()
+            removeCommentCollect()
 
             return root
         }
@@ -87,29 +93,123 @@ class CommentsListFragment : BottomSheetDialogFragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     fun setAddComment() {
-        val bottomSheetDialog =  BottomSheetDialog(requireContext())
-        bottomSheetDialog.setContentView(R.layout.bottom_sheet_add_comment)
-        val behavior = bottomSheetDialog.behavior
-        val icon = bottomSheetDialog.findViewById<ImageView>(R.id.addCommentUserIcon)
-        val send = bottomSheetDialog.findViewById<ImageButton>(R.id.send)
-        val comment = bottomSheetDialog.findViewById<TextInputEditText>(R.id.addComment)
+        addCommentDialog =  BottomSheetDialog(requireContext())
+        addCommentDialog?.let {
+            it.setContentView(R.layout.bottom_sheet_add_comment)
+            val behavior = it.behavior
+            val icon = it.findViewById<ImageView>(R.id.addCommentUserIcon)
+            val send = it.findViewById<ImageButton>(R.id.send)
+            val comment = it.findViewById<TextInputEditText>(R.id.addComment)
 
-        if (userId > 0) {
-            Picasso.get()
-                .load(sharedPref!!.getString("user_icon", "")).transform(CircleTransform())
-                .into(icon)
+            if (userId > 0) {
+                Picasso.get()
+                    .load(sharedPref!!.getString("user_icon", "")).transform(CircleTransform())
+                    .into(icon)
+            }
+
+            send?.setOnClickListener {
+                commentsListViewModel.addComment(key = userKey,
+                    app_label = "lesson",
+                    model = "item",
+                    object_id = 340,
+                    text = comment?.text.toString())
+            }
+
+//        comment?.setViewOnTouchListener()
+            comment?.requestFocus()
+            comment?.showKeyboard()
+            behavior.isDraggable = false
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            it.show()
         }
 
-        comment?.setViewOnTouchListener()
-//        comment?.requestFocus()
-//        comment?.showKeyboard()
-        behavior.isDraggable = false
-        behavior.state = BottomSheetBehavior.STATE_EXPANDED
-        bottomSheetDialog.show()
+    }
+
+    private fun addCommentCollect() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                commentsListViewModel.addCommentResponseData.collect {
+                    addCommentDialog?.let { dialog ->
+
+                        val send = dialog.findViewById<ImageButton>(R.id.send)
+                        val comment = dialog.findViewById<TextInputEditText>(R.id.addComment)
+                        val addCommentProgress = dialog.findViewById<LinearProgressIndicator>(R.id.addCommentProgress)
+
+                        when (it.status) {
+                            Result.Status.LOADING -> {
+                                send?.isEnabled = false
+                                addCommentProgress?.visible(true)
+                            }
+                            Result.Status.ERROR -> {
+                                send?.isEnabled = true
+                                addCommentProgress?.visible(false)
+                                commentsListViewModel.clearAddCommentResult()
+                                showMessage(activity?.getString(R.string.comments_add_comment_error))
+                            }
+                            Result.Status.SUCCESS -> {
+                                if (it.data != null && it.data.result) {
+                                    comment?.setText("")
+                                    comment?.hideKeyboard()
+                                    showMessage(activity?.getString(R.string.comments_add_comment_success))
+                                    dialog.dismiss()
+                                    addCommentDialog = null
+                                    commentsListAdapter?.refresh()
+                                } else {
+                                    showMessage(activity?.getString(R.string.comments_add_comment_error))
+                                }
+                                send?.isEnabled = true
+                                addCommentProgress?.visible(false)
+                                commentsListViewModel.clearAddCommentResult()
+                            }
+                            else -> {
+                                send?.isEnabled = true
+                                addCommentProgress?.visible(false)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun removeCommentCollect() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                commentsListViewModel.removeCommentResponseData.collect {
+                    when (it.status) {
+                        Result.Status.LOADING -> {
+                            binding.prependProgress.visible(true)
+                        }
+                        Result.Status.ERROR -> {
+                            binding.prependProgress.visible(false)
+                            commentsListViewModel.clearRemoveCommentResult()
+                            showMessage(activity?.getString(R.string.comments_remove_comment_error))
+                        }
+                        Result.Status.SUCCESS -> {
+                            if (it.data != null && it.data.result) {
+                                showMessage(activity?.getString(R.string.comments_remove_comment_success))
+                                addCommentDialog = null
+                                commentsListAdapter?.refresh()
+                            } else {
+                                showMessage(activity?.getString(R.string.comments_remove_comment_error))
+                            }
+                            binding.prependProgress.visible(false)
+                            commentsListViewModel.clearRemoveCommentResult()
+                        }
+                        else -> {
+                            binding.prependProgress.visible(false)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     fun setQuery() {
-        commentsListViewModel.setQuery(app_label = "lesson", model = "item", object_id = 340, key = "sdfjljljljlsf")
+        commentsListViewModel.setQuery(app_label = "lesson",
+            model = "item",
+            object_id = 340,
+            key = userKey)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -122,7 +222,8 @@ class CommentsListFragment : BottomSheetDialogFragment() {
             parentLayout?.let { pl ->
                 val behaviour = BottomSheetBehavior.from(pl)
                 setupFullHeight(pl)
-                behaviour.state = BottomSheetBehavior.STATE_COLLAPSED
+                behaviour.state = BottomSheetBehavior.STATE_EXPANDED
+                behaviour.isDraggable = false
             }
         }
         return dialog
@@ -197,13 +298,28 @@ class CommentsListFragment : BottomSheetDialogFragment() {
         }
     }
 
+    override fun clickOnCommentRemove(position: Int, element: Comment) {
+        commentsListViewModel.removeComment(key = userKey, comment_id = element.id)
+    }
+
+    override fun clickOnCommentEdit(position: Int, element: Comment) {
+
+    }
+
     private fun setSwipeRefreshAdapter() {
         if (commentsListAdapter == null) {
-            commentsListAdapter = CommentsListAdapter()
+            commentsListAdapter = CommentsListAdapter(listener = this)
         }
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.isRefreshing = true
             commentsListAdapter?.refresh()
+        }
+    }
+
+    private fun showMessage(msg: String?) {
+        if (msg != null) {
+            Snackbar.make(binding.root, msg, Snackbar.ANIMATION_MODE_SLIDE).setAction("OK!") {
+            }.show()
         }
     }
 }

@@ -5,10 +5,7 @@ import com.mobilicos.smotrofon.data.queries.*
 import com.mobilicos.smotrofon.data.remote.CommentRemoteDataSource
 import com.mobilicos.smotrofon.data.remote.MediaRemoteDataSource
 import com.mobilicos.smotrofon.data.remote.VideoRemoteDataSource
-import com.mobilicos.smotrofon.data.responses.CommentAddResponse
-import com.mobilicos.smotrofon.data.responses.RemoveMediaResponse
-import com.mobilicos.smotrofon.data.responses.RemoveVideoResponse
-import com.mobilicos.smotrofon.data.responses.UploadVideoResponse
+import com.mobilicos.smotrofon.data.responses.*
 import com.mobilicos.smotrofon.model.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -27,6 +24,14 @@ class CommentRepository @Inject constructor(
         return flow {
             emit(Result.loading())
             val result = commentRemoteDataSource.addCommentData(q)
+            emit(result)
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun removeCommentData(q: CommentsRemoveQuery): Flow<Result<CommentRemoveResponse>> {
+        return flow {
+            emit(Result.loading())
+            val result = commentRemoteDataSource.removeCommentData(q)
             emit(result)
         }.flowOn(Dispatchers.IO)
     }

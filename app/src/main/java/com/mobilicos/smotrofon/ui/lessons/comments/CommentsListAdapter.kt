@@ -17,7 +17,7 @@ import com.mobilicos.smotrofon.util.CircleTransform
 import com.mobilicos.smotrofon.util.loadImage
 import com.squareup.picasso.Picasso
 
-class CommentsListAdapter() :
+class CommentsListAdapter(private var listener: CommentsInterface? = null) :
     PagingDataAdapter<Comment, RecyclerView.ViewHolder>(CommentsListComparator) {
 
     lateinit var context: Context
@@ -35,7 +35,7 @@ class CommentsListAdapter() :
 
     object CommentsListComparator : DiffUtil.ItemCallback<Comment>() {
         override fun areItemsTheSame(oldItem: Comment, newItem: Comment): Boolean {
-            return oldItem.object_id == newItem.object_id
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Comment, newItem: Comment): Boolean {
@@ -54,6 +54,11 @@ class CommentsListAdapter() :
             Picasso.get()
                 .load(item.user_icon).transform(CircleTransform())
                 .into(userIcon)
+
+            remove.setOnClickListener {
+                println("COMMENT ITEM $item")
+                listener?.clickOnCommentRemove(position = position, element = item)
+            }
         }
     }
 

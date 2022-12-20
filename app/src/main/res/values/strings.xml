@@ -135,5 +135,9 @@
 
     <string name="fragment_layout_comments_header">Comments: %1$d</string>
     <string name="comments_add_comment_title">Add comment</string>
-    <string name="comments_add_comment_hint">Enter comment text</string>
+    <string name="comments_add_comment_hint">Enter comment</string>
+    <string name="comments_add_comment_success">Comment added successfully</string>
+    <string name="comments_add_comment_error">An error occurred while saving comment</string>
+    <string name="comments_remove_comment_success">Comment removed successfully</string>
+    <string name="comments_remove_comment_error">An error occurred while removing comment</string>
 </resources>

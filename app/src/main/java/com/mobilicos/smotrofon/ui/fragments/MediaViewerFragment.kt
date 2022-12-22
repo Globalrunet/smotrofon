@@ -133,8 +133,6 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
         }
 
         lifecycleScope.launch {
-            // We repeat on the STARTED lifecycle because an Activity may be PAUSED
-            // but still visible on the screen, for example in a multi window app
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 refreshRelatedMediaList()
             }
@@ -176,7 +174,6 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
 
     override fun clickOnMediaListElement(media: Media, type: Int) {
         if (type == 0) {
-            println("RESULT TYPE 0")
             mediaViewModel.select(media, mediaViewModel.getContentType())
             mediaViewModel.setCurrentPosition(0)
             mediaViewModel.setRelatedVideoListEmpty()
@@ -193,8 +190,6 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
     private fun goToUserAccount(media: Media) {
         val userContentViewModel: UserContentViewModel by activityViewModels()
 
-        println("RESULT TYPE 1")
-        println("RESULT OPEN NEW FRAGMENT ${media.user_id}")
         userContentViewModel.currentUser = media.user_id
         userContentViewModel.currentTab = 0
         userContentViewModel.currentType = mediaViewModel.getContentType()
@@ -233,11 +228,10 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
                 override fun onResourceReady(
                     resource: Drawable?,
                     model: Any?,
-                    target: com.bumptech.glide.request.target.Target<Drawable>?,
+                    target: Target<Drawable>?,
                     dataSource: com.bumptech.glide.load.DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    println("GLIDER ${resource}")
                     binding.player.defaultArtwork = resource
                     return true
                 }
@@ -248,7 +242,7 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    TODO("Not yet implemented")
+                    return false
                 }
             })
             .into(image)
@@ -288,15 +282,6 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
         mediaViewModel.setIsPlaying(false)
 
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-    }
-
-    @SuppressLint("InlinedApi")
-    private fun hideSystemUi() {
-//        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
-    }
-
-    private fun showSystemUi() {
-//        (requireActivity() as AppCompatActivity).supportActionBar?.show()
     }
 
     private fun showNeedUserAccountToast() {
@@ -346,7 +331,6 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
         super.onStart()
 
         dialog?.let {
-            // Находим сам bottomSheet и достаём из него Behaviour
             val bottomSheet = it.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout
             val behavior = BottomSheetBehavior.from(bottomSheet)
 
@@ -358,59 +342,32 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
                     }
                 }
 
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-                }
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {}
             })
         }
 
         preparePlayer()
 
-        println("RESULT on start is playing ${mediaViewModel.getIsPlaying()}")
-
         if (mediaViewModel.getIsPlaying()) player?.play()
-
-        println("RESULT ONSTART")
     }
 
     override fun onResume() {
         super.onResume()
-        hideSystemUi()
         if (player == null) {
             preparePlayer()
         }
 
-        println("RESULT on resume is playing ${mediaViewModel.getIsPlaying()}")
         if (mediaViewModel.getIsPlaying()) player?.play()
-        println("RESULT ONRESUME")
     }
 
     override fun onPause() {
         super.onPause()
 
-        showSystemUi()
-
-        println("RESULT on pause is playing ${player!!.isPlaying}")
-
         player?.let { mediaViewModel.setIsPlaying(it.isPlaying) }
-
-//        if (!requireActivity().isChangingConfigurations) {
-//            player?.pause()
-//        }
-
-        println("RESULT ONPAUSE")
-    }
-
-    override fun onStop() {
-        super.onStop()
-
-        println("RESULT onStop is playing ${player!!.isPlaying}")
-        println("RESULT ONSTOP")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        println("RESULT ONDESTROY")
 
         if (!requireActivity().isChangingConfigurations) {
             releasePlayer()
@@ -421,8 +378,6 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-
-        println("RESULT onSaveInstanceState ${requireActivity().isChangingConfigurations}")
 
         outState.putBoolean("isConfigurationChange", requireActivity().isChangingConfigurations);
     }

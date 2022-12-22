@@ -140,4 +140,10 @@
     <string name="comments_add_comment_error">An error occurred while saving comment</string>
     <string name="comments_remove_comment_success">Comment removed successfully</string>
     <string name="comments_remove_comment_error">An error occurred while removing comment</string>
+    <string name="dialog_remove_comment_title">Remove comment?</string>
+    <string name="comments_edit_comment_success">Comment edited successfully</string>
+    <string name="comments_edit_comment_error">An error occurred while saving comment</string>
+    <string name="comments_list_header">Comments (%1$d)</string>
+
+    <string name="need_account">Log in or register</string>
 </resources>

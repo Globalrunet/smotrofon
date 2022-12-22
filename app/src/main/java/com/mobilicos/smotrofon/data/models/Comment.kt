@@ -7,6 +7,7 @@ data class Comment (
     val app_label: String,
     val model: String,
     val object_id: Int,
+    val total_elements: Int = 0,
     val id: Int,
     val parent_id: Int,
     val text: String,

@@ -35,4 +35,12 @@ class CommentRepository @Inject constructor(
             emit(result)
         }.flowOn(Dispatchers.IO)
     }
+
+    suspend fun editCommentData(q: CommentsEditQuery): Flow<Result<CommentEditResponse>> {
+        return flow {
+            emit(Result.loading())
+            val result = commentRemoteDataSource.editCommentData(q)
+            emit(result)
+        }.flowOn(Dispatchers.IO)
+    }
 }

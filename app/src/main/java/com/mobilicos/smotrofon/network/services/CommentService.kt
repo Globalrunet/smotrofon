@@ -3,6 +3,7 @@ package com.mobilicos.smotrofon.network.services
 import com.mobilicos.smotrofon.Config
 import com.mobilicos.smotrofon.data.models.*
 import com.mobilicos.smotrofon.data.responses.CommentAddResponse
+import com.mobilicos.smotrofon.data.responses.CommentEditResponse
 import com.mobilicos.smotrofon.data.responses.CommentRemoveResponse
 import com.mobilicos.smotrofon.data.responses.CommentsListResponse
 import okhttp3.ResponseBody
@@ -40,4 +41,12 @@ interface CommentService {
         @Path("comment_id") comment_id: Int,
         @Field("k") key: String
     ): Response<CommentRemoveResponse>
+
+    @FormUrlEncoded
+    @POST("api/comments/edit/{comment_id}/")
+    suspend fun editCommentData(
+        @Path("comment_id") comment_id: Int,
+        @Field("k") key: String,
+        @Field("text") text: String
+    ): Response<CommentEditResponse>
 }

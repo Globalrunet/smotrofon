@@ -27,7 +27,9 @@ class LessonInfoFragment : Fragment() {
     private lateinit var binding: LessonInfoFragmentBinding
     private val lessonInfoViewModel: LessonInfoViewModel by viewModels()
     private val args: LessonInfoFragmentArgs by navArgs()
-    private var ident: Int = 4000265
+    private var ident: Int = 0
+    private var elementId: Int = 0
+    private var initialCommentsCount: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +44,9 @@ class LessonInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initialCommentsCount = args.commentsCounter
         ident = args.ident
+        elementId = args.objectId
 
         val currentLanguageCode: String = ConfigurationCompat.getLocales(resources.configuration)[0]?.language?:"EN"
         val language = if (currentLanguageCode.lowercase() == "ru") "ru" else "en"
@@ -63,7 +67,7 @@ class LessonInfoFragment : Fragment() {
         }
 
         binding.begin.setOnClickListener {
-            val action = LessonInfoFragmentDirections.actionLessonInfoToStepsInfo(ident)
+            val action = LessonInfoFragmentDirections.actionLessonInfoToStepsInfo(ident = ident, objectId = elementId)
             findNavController().navigate(action)
         }
 
@@ -71,8 +75,17 @@ class LessonInfoFragment : Fragment() {
         binding.comments.count = 0
         binding.comments.setOnClickListener {
             val commentsFragment = CommentsListFragment()
+
+            val args = Bundle()
+            args.putString("current_app_label", "lesson")
+            args.putString("current_model", "item")
+            args.putInt("current_object_id", elementId)
+            commentsFragment.arguments = args
+
             commentsFragment.show(requireActivity().supportFragmentManager, commentsFragment.tag)
         }
+
+        binding.comments.count = initialCommentsCount
 
         binding.like.count = 3
         binding.like.setOnClickListener {

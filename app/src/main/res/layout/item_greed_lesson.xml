@@ -32,6 +32,32 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <com.google.android.material.chip.Chip
+                android:id="@+id/commentsButton"
+                style="@style/Widget.Material3.Chip.Assist.Elevated"
+                android:layout_marginTop="0dip"
+                android:layout_marginStart="4dip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:chipIconTint="@color/black"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:chipIcon="@drawable/chat_bubble"
+                android:text="0"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/likesButton"
+                style="@style/Widget.Material3.Chip.Assist.Elevated"
+                android:layout_marginStart="4dip"
+                android:layout_marginTop="0dip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:chipIconTint="@color/black"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/commentsButton"
+                app:chipIcon="@drawable/thumb_up"
+                android:text="0"/>
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

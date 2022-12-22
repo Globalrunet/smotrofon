@@ -120,7 +120,7 @@ class LocalLessonsListFragment : Fragment(), MenuProvider, OnClickListItemElemen
     override fun clickOnListItemElement(element: Item, type:Int, position:Int) {
         lessonsListViewModel.changedPosition = position
         lessonsContentViewModel.currentTab = 1
-        val action = LessonsContentFragmentDirections.actionLocalLessonsToLessonInfo(element.ident)
+        val action = LessonsContentFragmentDirections.actionLocalLessonsToLessonInfo(commentsCounter = 0, ident = element.ident, objectId = element.id)
         lessonsListViewModel.searchString = searchView.query.toString()
         findNavController().navigate(action)
     }

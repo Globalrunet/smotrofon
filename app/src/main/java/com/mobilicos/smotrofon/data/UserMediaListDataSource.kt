@@ -26,6 +26,7 @@ class UserMediaListDataSource @Inject constructor(
             return if (response.isSuccessful) {
                 val mediaElements = checkNotNull(response.body()).elements
                 val totalPages = checkNotNull(response.body()).totalPages
+                val totalElements = checkNotNull(response.body()).totalElements
                 val nextPage = if (page < totalPages) page + 1 else null
                 val prevPage = if (page > 1) page - 1 else null
                 LoadResult.Page(

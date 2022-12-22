@@ -12,10 +12,6 @@
         android:title="@string/menu_item_channels"
         android:icon="@drawable/group"/>
 
-    <item android:id="@+id/courses"
-        android:title="@string/menu_item_war"
-        android:icon="@drawable/star"/>
-
     <item android:id="@+id/profile"
         android:title="@string/menu_item_profile"
         android:icon="@drawable/person"/>

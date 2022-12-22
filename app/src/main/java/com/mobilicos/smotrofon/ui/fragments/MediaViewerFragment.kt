@@ -1,7 +1,9 @@
 package com.mobilicos.smotrofon.ui.fragments
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
@@ -38,6 +40,7 @@ import com.mobilicos.smotrofon.databinding.VideoViewerBinding
 import com.mobilicos.smotrofon.model.Result
 import com.mobilicos.smotrofon.ui.adapters.OnClickMediaListElement
 import com.mobilicos.smotrofon.ui.adapters.RelatedMediaListRecyclerAdapter
+import com.mobilicos.smotrofon.ui.lessons.comments.CommentsListFragment
 import com.mobilicos.smotrofon.ui.viewmodels.MediaViewModel
 import com.mobilicos.smotrofon.ui.viewmodels.UserContentViewModel
 import com.mobilicos.smotrofon.util.CircleTransform
@@ -59,9 +62,18 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
     private var playWhenReady = true
     private var isConfigurationChanged = false
     private val mediaViewModel: MediaViewModel by activityViewModels()
+    private var sharedPref: SharedPreferences? = null
+    private var userId: Int = 0
+    private var userKey: String = ""
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+        sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        sharedPref?.let {
+            userKey = it.getString("key", "").toString()
+            userId = it.getInt("user_id", 0)
+        }
 
         isConfigurationChanged = savedInstanceState?.getBoolean("isConfigurationChange") ?: false
 
@@ -130,6 +142,28 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             refreshRelatedMediaList()
+        }
+
+        binding.addCommentTextLabel?.setOnClickListener {
+            if (userId > 0) {
+                val commentsFragment = CommentsListFragment()
+
+                val args = Bundle()
+                args.putString("current_app_label", "video")
+
+                if (mediaViewModel.getContentType() == Config.TYPE_VIDEO) {
+                    args.putString("current_model", "video")
+                } else {
+                    args.putString("current_model", "audio")
+                }
+
+                args.putInt("current_object_id", media.id)
+                commentsFragment.arguments = args
+
+                commentsFragment.show(requireActivity().supportFragmentManager, commentsFragment.tag)
+            } else {
+                showNeedUserAccountToast()
+            }
         }
 
         return binding.root

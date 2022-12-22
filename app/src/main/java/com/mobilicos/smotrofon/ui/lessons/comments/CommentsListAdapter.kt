@@ -15,12 +15,15 @@ import com.mobilicos.smotrofon.databinding.CourseLessonLoadedBinding
 import com.mobilicos.smotrofon.ui.interfaces.OnClickListItemElement
 import com.mobilicos.smotrofon.util.CircleTransform
 import com.mobilicos.smotrofon.util.loadImage
+import com.mobilicos.smotrofon.util.visible
 import com.squareup.picasso.Picasso
 
 class CommentsListAdapter(private var listener: CommentsInterface? = null) :
     PagingDataAdapter<Comment, RecyclerView.ViewHolder>(CommentsListComparator) {
 
     lateinit var context: Context
+    var isCounterSet: Boolean = false
+    var currentUser: Int = 0
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -59,6 +62,28 @@ class CommentsListAdapter(private var listener: CommentsInterface? = null) :
                 println("COMMENT ITEM $item")
                 listener?.clickOnCommentRemove(position = position, element = item)
             }
+
+            edit.setOnClickListener {
+                listener?.clickOnCommentEdit(position = position, element = item)
+            }
+
+            if (!isCounterSet) {
+                listener?.setTotalCommentsCounter(item.total_elements)
+                isCounterSet = true
+            }
+
+            println("ADAPTER : $currentUser : ${item.user_id}")
+
+            if (currentUser != item.user_id) {
+                edit.visible(false)
+                remove.visible(false)
+            } else {
+                edit.visible(true)
+                remove.visible(true)
+            }
+
+            like.setOnClickListener {  }
+            dislike.setOnClickListener {  }
         }
     }
 

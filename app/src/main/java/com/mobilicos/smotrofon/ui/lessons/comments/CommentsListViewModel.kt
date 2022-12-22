@@ -7,11 +7,14 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.mobilicos.smotrofon.data.models.Comment
+import com.mobilicos.smotrofon.data.models.Media
 import com.mobilicos.smotrofon.data.queries.CommentsAddQuery
+import com.mobilicos.smotrofon.data.queries.CommentsEditQuery
 import com.mobilicos.smotrofon.data.queries.CommentsListQuery
 import com.mobilicos.smotrofon.data.queries.CommentsRemoveQuery
 import com.mobilicos.smotrofon.data.repositories.CommentRepository
 import com.mobilicos.smotrofon.data.responses.CommentAddResponse
+import com.mobilicos.smotrofon.data.responses.CommentEditResponse
 import com.mobilicos.smotrofon.data.responses.CommentRemoveResponse
 import com.mobilicos.smotrofon.data.sourses.CommentsListDataSource
 import com.mobilicos.smotrofon.model.Result
@@ -28,6 +31,13 @@ class CommentsListViewMode @Inject constructor(
     private val repository: CommentRepository
 ) : ViewModel() {
 
+    var isRemoveDialogShown = false
+    var currentElement: Comment? = null
+    var currentPosition: Int = -1
+    lateinit var currentAppLabel: String
+    lateinit var currentModel: String
+    private var currentObjectId: Int = 0
+
     private val _queryData = MutableStateFlow(CommentsListQuery())
     private val queryData: StateFlow<CommentsListQuery> = _queryData.asStateFlow()
 
@@ -37,12 +47,20 @@ class CommentsListViewMode @Inject constructor(
     private val _removeCommentResponseData = MutableStateFlow<Result<CommentRemoveResponse>>(Result.ready())
     val removeCommentResponseData: StateFlow<Result<CommentRemoveResponse>> = _removeCommentResponseData.asStateFlow()
 
+    private val _editCommentResponseData = MutableStateFlow<Result<CommentEditResponse>>(Result.ready())
+    val editCommentResponseData: StateFlow<Result<CommentEditResponse>> = _editCommentResponseData.asStateFlow()
 
-    fun addComment(key: String, app_label: String, model: String, object_id: Int, text: String, parent_id: Int = 0) {
+    fun setObjectData(app_label: String, model: String, object_id: Int) {
+        currentAppLabel = app_label
+        currentModel = model
+        currentObjectId = object_id
+    }
+
+    fun addComment(key: String, text: String, parent_id: Int = 0) {
         val query = CommentsAddQuery(key = key,
-            app_label = app_label,
-            model = model,
-            object_id = object_id,
+            app_label = currentAppLabel,
+            model = currentModel,
+            object_id = currentObjectId,
             text = text,
             parent_id = parent_id)
         viewModelScope.launch {
@@ -58,6 +76,15 @@ class CommentsListViewMode @Inject constructor(
         viewModelScope.launch {
             repository.removeCommentData(q = query).collect {
                 _removeCommentResponseData.value = it
+            }
+        }
+    }
+
+    fun editComment(key: String, text: String, comment_id: Int) {
+        val query = CommentsEditQuery(key = key, text = text, comment_id = comment_id)
+        viewModelScope.launch {
+            repository.editCommentData(q = query).collect {
+                _editCommentResponseData.value = it
             }
         }
     }
@@ -85,12 +112,19 @@ class CommentsListViewMode @Inject constructor(
         )
     }
 
-    fun setQuery(app_label: String, model: String, object_id: Int, key: String) {
-        _queryData.tryEmit(CommentsListQuery(app_label = app_label, model = model, object_id = object_id, key = key))
+    fun setQuery(key: String) {
+        _queryData.tryEmit(CommentsListQuery(app_label = currentAppLabel,
+            model = currentModel,
+            object_id = currentObjectId,
+            key = key))
     }
 
     fun clearAddCommentResult() {
         _addCommentResponseData.value = Result.ready()
+    }
+
+    fun clearEditCommentResult() {
+        _editCommentResponseData.value = Result.ready()
     }
 
     fun clearRemoveCommentResult() {

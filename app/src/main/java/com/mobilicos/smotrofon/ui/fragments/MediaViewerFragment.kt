@@ -143,25 +143,21 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
         }
 
         binding.addCommentTextLabel?.setOnClickListener {
-            if (userId > 0) {
-                val commentsFragment = CommentsListFragment()
+            val commentsFragment = CommentsListFragment()
 
-                val args = Bundle()
-                args.putString("current_app_label", "video")
+            val args = Bundle()
+            args.putString("current_app_label", "video")
 
-                if (mediaViewModel.getContentType() == Config.TYPE_VIDEO) {
-                    args.putString("current_model", "video")
-                } else {
-                    args.putString("current_model", "audio")
-                }
-
-                args.putInt("current_object_id", media.id)
-                commentsFragment.arguments = args
-
-                commentsFragment.show(requireActivity().supportFragmentManager, commentsFragment.tag)
+            if (mediaViewModel.getContentType() == Config.TYPE_VIDEO) {
+                args.putString("current_model", "video")
             } else {
-                showNeedUserAccountToast()
+                args.putString("current_model", "audio")
             }
+
+            args.putInt("current_object_id", media.id)
+            commentsFragment.arguments = args
+
+            commentsFragment.show(requireActivity().supportFragmentManager, commentsFragment.tag)
         }
 
         return binding.root

@@ -15,6 +15,7 @@ import com.mobilicos.smotrofon.databinding.ItemGreedLoadedLessonBinding
 import com.mobilicos.smotrofon.ui.interfaces.OnClickListItemElement
 import com.mobilicos.smotrofon.util.CircleTransform
 import com.mobilicos.smotrofon.util.loadImage
+import com.mobilicos.smotrofon.util.visible
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -78,6 +79,20 @@ class LessonsListAdapter(val listener: OnClickListItemElement<Lesson>) :
 
             poster.loadImage(item.image.replace("origami", "uploaded_images"))
             title.text = item.title
+
+            if (item.commentsCount > 0) {
+                commentsButton.text = item.commentsCount.toString()
+                commentsButton.visible(true)
+            } else {
+                commentsButton.visible(false)
+            }
+
+            if (item.likesCount > 0) {
+                likesButton.text = item.likesCount.toString()
+                likesButton.visible(true)
+            } else {
+                likesButton.visible(false)
+            }
         }
     }
 
@@ -93,6 +108,20 @@ class LessonsListAdapter(val listener: OnClickListItemElement<Lesson>) :
 
             poster.loadImage(item.image.replace("origami", "uploaded_images"))
             title.text = item.title
+
+            if (item.commentsCount > 0) {
+                commentsButton.text = item.commentsCount.toString()
+                commentsButton.visible(true)
+            } else {
+                commentsButton.visible(false)
+            }
+
+            if (item.likesCount > 0) {
+                likesButton.text = item.likesCount.toString()
+                likesButton.visible(true)
+            } else {
+                likesButton.visible(false)
+            }
         }
     }
 

@@ -1,117 +1,133 @@
 package com.mobilicos.smotrofon.ui.lessons.comments
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mobilicos.smotrofon.data.LessonRepository
-import com.mobilicos.smotrofon.data.models.Item
-import com.mobilicos.smotrofon.data.models.LessonItem
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.mobilicos.smotrofon.data.models.Comment
+import com.mobilicos.smotrofon.data.models.Media
+import com.mobilicos.smotrofon.data.queries.CommentsAddQuery
+import com.mobilicos.smotrofon.data.queries.CommentsEditQuery
+import com.mobilicos.smotrofon.data.queries.CommentsListQuery
+import com.mobilicos.smotrofon.data.queries.CommentsRemoveQuery
+import com.mobilicos.smotrofon.data.repositories.CommentRepository
+import com.mobilicos.smotrofon.data.responses.CommentAddResponse
+import com.mobilicos.smotrofon.data.responses.CommentEditResponse
+import com.mobilicos.smotrofon.data.responses.CommentRemoveResponse
+import com.mobilicos.smotrofon.data.sourses.CommentsListDataSource
 import com.mobilicos.smotrofon.model.Result
-import com.mobilicos.smotrofon.util.FileUtil
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
-import java.io.*
+import retrofit2.Retrofit
 import javax.inject.Inject
 
-
 @HiltViewModel
-class CommentsListViewModel @Inject constructor(
-    private val lessonRepository: LessonRepository,
-    private val moshi: Moshi) : ViewModel() {
+class CommentsListViewMode @Inject constructor(
+    private val retrofit: Retrofit,
+    private val repository: CommentRepository
+) : ViewModel() {
 
-    private val _downloadLessonResult = MutableStateFlow<Result<ResponseBody>>(Result.ready())
-    val downloadLessonResult: StateFlow<Result<ResponseBody>> = _downloadLessonResult
-    private lateinit var fileToSaveFiles: File
-    private lateinit var currentLanguage: String
+    var isRemoveDialogShown = false
+    var currentElement: Comment? = null
+    var currentPosition: Int = -1
+    lateinit var currentAppLabel: String
+    lateinit var currentModel: String
+    private var currentObjectId: Int = 0
 
-    fun getItem(itemIdent: Int): LessonItem? {
-        val bufferedReader: BufferedReader = File(
-            fileToSaveFiles,
-            itemIdent.toString() + "_$currentLanguage.json"
-        ).bufferedReader()
-        val inputString = bufferedReader.use { it.readText() }
+    private val _queryData = MutableStateFlow(CommentsListQuery())
+    private val queryData: StateFlow<CommentsListQuery> = _queryData.asStateFlow()
 
-        val jsonAdapter: JsonAdapter<LessonItem> = moshi.adapter(
-            LessonItem::class.java
+    private val _addCommentResponseData = MutableStateFlow<Result<CommentAddResponse>>(Result.ready())
+    val addCommentResponseData: StateFlow<Result<CommentAddResponse>> = _addCommentResponseData.asStateFlow()
+
+    private val _removeCommentResponseData = MutableStateFlow<Result<CommentRemoveResponse>>(Result.ready())
+    val removeCommentResponseData: StateFlow<Result<CommentRemoveResponse>> = _removeCommentResponseData.asStateFlow()
+
+    private val _editCommentResponseData = MutableStateFlow<Result<CommentEditResponse>>(Result.ready())
+    val editCommentResponseData: StateFlow<Result<CommentEditResponse>> = _editCommentResponseData.asStateFlow()
+
+    fun setObjectData(app_label: String, model: String, object_id: Int) {
+        currentAppLabel = app_label
+        currentModel = model
+        currentObjectId = object_id
+    }
+
+    fun addComment(key: String, text: String, parent_id: Int = 0) {
+        val query = CommentsAddQuery(key = key,
+            app_label = currentAppLabel,
+            model = currentModel,
+            object_id = currentObjectId,
+            text = text,
+            parent_id = parent_id)
+        viewModelScope.launch {
+            repository.addCommentData(q = query).collect {
+                _addCommentResponseData.value = it
+            }
+        }
+    }
+
+    fun removeComment(key: String, comment_id: Int) {
+        val query = CommentsRemoveQuery(key = key,
+            comment_id = comment_id)
+        viewModelScope.launch {
+            repository.removeCommentData(q = query).collect {
+                _removeCommentResponseData.value = it
+            }
+        }
+    }
+
+    fun editComment(key: String, text: String, comment_id: Int) {
+        val query = CommentsEditQuery(key = key, text = text, comment_id = comment_id)
+        viewModelScope.launch {
+            repository.editCommentData(q = query).collect {
+                _editCommentResponseData.value = it
+            }
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val commentsByQueryData: StateFlow<PagingData<Comment>> = queryData
+        .onEach { println("RESULT QUERY $it") }
+        .map { q -> (::commentsPager)(q) }
+        .flatMapLatest { pager -> pager.flow }
+        .cachedIn(viewModelScope).stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
+
+    private fun commentsPager(query: CommentsListQuery): Pager<Int, Comment> {
+        return getCommentsResultStream(query)
+    }
+
+    private fun getCommentsResultStream(query: CommentsListQuery): Pager<Int, Comment> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 30,
+                prefetchDistance = 25,
+                initialLoadSize = 30,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { CommentsListDataSource(retrofit, query) }
         )
-
-        return jsonAdapter.fromJson(inputString)
     }
 
-    fun setFileToSaveFiles(file: File) {
-        fileToSaveFiles = file
+    fun setQuery(key: String) {
+        _queryData.tryEmit(CommentsListQuery(app_label = currentAppLabel,
+            model = currentModel,
+            object_id = currentObjectId,
+            key = key))
     }
 
-    fun setCurrentLanguage(language: String) {
-        currentLanguage = language
+    fun clearAddCommentResult() {
+        _addCommentResponseData.value = Result.ready()
     }
 
-    fun downloadLessonByIdent(ident: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            lessonRepository.downloadLessonByIdent(ident=ident).collect {
-                if (it.status == Result.Status.SUCCESS) {
-                    val result = writeResponseBodyToDisk(ident, it.data as ResponseBody)
-                    if (result) {
-                        val courseLessonItem = getItem(ident)
-                        if (courseLessonItem != null) {
-                            insertLessonInfoToDb(lesson = courseLessonItem.item)
-                        }
-                    }
-                }
-                _downloadLessonResult.value = it
-            }
-        }
+    fun clearEditCommentResult() {
+        _editCommentResponseData.value = Result.ready()
     }
 
-    private fun writeResponseBodyToDisk(ident: Int, body: ResponseBody): Boolean {
-
-        val fileToSave = fileToSaveFiles
-        if (!fileToSave.exists()) {
-            fileToSave.mkdirs()
-        }
-
-        return try {
-            var inputStream: InputStream? = null
-            var outputStream: OutputStream? = null
-            try {
-                val fileReader = ByteArray(4096)
-                val fileSize = body.contentLength()
-                var fileSizeDownloaded: Long = 0
-                inputStream = body.byteStream()
-                outputStream = FileOutputStream(File(fileToSave, "$ident.zip"))
-                while (true) {
-                    val read: Int = inputStream.read(fileReader)
-                    if (read == -1) {
-                        break
-                    }
-                    outputStream.write(fileReader, 0, read)
-                    fileSizeDownloaded += read.toLong()
-                    Log.d(TAG, "file download: $fileSizeDownloaded of $fileSize")
-                }
-                outputStream.flush()
-
-                println("RESULT SAVE ZIP ${File(fileToSave, "$ident.zip")}")
-                FileUtil.unpackZip(fileToSave.absolutePath, "$ident.zip")
-
-                true
-            } catch (e: IOException) {
-                false
-            } finally {
-                inputStream?.close()
-                outputStream?.close()
-            }
-        } catch (e: IOException) {
-            false
-        }
-    }
-
-    private fun insertLessonInfoToDb(lesson: Item) {
-        lessonRepository.insertLesson(lesson = lesson)
+    fun clearRemoveCommentResult() {
+        _removeCommentResponseData.value = Result.ready()
     }
 }

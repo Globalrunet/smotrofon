@@ -1,7 +1,9 @@
 package com.mobilicos.smotrofon.ui.fragments
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
@@ -38,6 +40,7 @@ import com.mobilicos.smotrofon.databinding.VideoViewerBinding
 import com.mobilicos.smotrofon.model.Result
 import com.mobilicos.smotrofon.ui.adapters.OnClickMediaListElement
 import com.mobilicos.smotrofon.ui.adapters.RelatedMediaListRecyclerAdapter
+import com.mobilicos.smotrofon.ui.lessons.comments.CommentsListFragment
 import com.mobilicos.smotrofon.ui.viewmodels.MediaViewModel
 import com.mobilicos.smotrofon.ui.viewmodels.UserContentViewModel
 import com.mobilicos.smotrofon.util.CircleTransform
@@ -59,9 +62,18 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
     private var playWhenReady = true
     private var isConfigurationChanged = false
     private val mediaViewModel: MediaViewModel by activityViewModels()
+    private var sharedPref: SharedPreferences? = null
+    private var userId: Int = 0
+    private var userKey: String = ""
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+        sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        sharedPref?.let {
+            userKey = it.getString("key", "").toString()
+            userId = it.getInt("user_id", 0)
+        }
 
         isConfigurationChanged = savedInstanceState?.getBoolean("isConfigurationChange") ?: false
 
@@ -121,8 +133,6 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
         }
 
         lifecycleScope.launch {
-            // We repeat on the STARTED lifecycle because an Activity may be PAUSED
-            // but still visible on the screen, for example in a multi window app
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 refreshRelatedMediaList()
             }
@@ -130,6 +140,28 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             refreshRelatedMediaList()
+        }
+
+        binding.addCommentTextLabel?.setOnClickListener {
+            if (userId > 0) {
+                val commentsFragment = CommentsListFragment()
+
+                val args = Bundle()
+                args.putString("current_app_label", "video")
+
+                if (mediaViewModel.getContentType() == Config.TYPE_VIDEO) {
+                    args.putString("current_model", "video")
+                } else {
+                    args.putString("current_model", "audio")
+                }
+
+                args.putInt("current_object_id", media.id)
+                commentsFragment.arguments = args
+
+                commentsFragment.show(requireActivity().supportFragmentManager, commentsFragment.tag)
+            } else {
+                showNeedUserAccountToast()
+            }
         }
 
         return binding.root
@@ -142,7 +174,6 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
 
     override fun clickOnMediaListElement(media: Media, type: Int) {
         if (type == 0) {
-            println("RESULT TYPE 0")
             mediaViewModel.select(media, mediaViewModel.getContentType())
             mediaViewModel.setCurrentPosition(0)
             mediaViewModel.setRelatedVideoListEmpty()
@@ -159,8 +190,6 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
     private fun goToUserAccount(media: Media) {
         val userContentViewModel: UserContentViewModel by activityViewModels()
 
-        println("RESULT TYPE 1")
-        println("RESULT OPEN NEW FRAGMENT ${media.user_id}")
         userContentViewModel.currentUser = media.user_id
         userContentViewModel.currentTab = 0
         userContentViewModel.currentType = mediaViewModel.getContentType()
@@ -199,11 +228,10 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
                 override fun onResourceReady(
                     resource: Drawable?,
                     model: Any?,
-                    target: com.bumptech.glide.request.target.Target<Drawable>?,
+                    target: Target<Drawable>?,
                     dataSource: com.bumptech.glide.load.DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    println("GLIDER ${resource}")
                     binding.player.defaultArtwork = resource
                     return true
                 }
@@ -214,7 +242,7 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    TODO("Not yet implemented")
+                    return false
                 }
             })
             .into(image)
@@ -254,15 +282,6 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
         mediaViewModel.setIsPlaying(false)
 
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-    }
-
-    @SuppressLint("InlinedApi")
-    private fun hideSystemUi() {
-//        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
-    }
-
-    private fun showSystemUi() {
-//        (requireActivity() as AppCompatActivity).supportActionBar?.show()
     }
 
     private fun showNeedUserAccountToast() {
@@ -312,7 +331,6 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
         super.onStart()
 
         dialog?.let {
-            // Находим сам bottomSheet и достаём из него Behaviour
             val bottomSheet = it.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout
             val behavior = BottomSheetBehavior.from(bottomSheet)
 
@@ -324,59 +342,32 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
                     }
                 }
 
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-                }
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {}
             })
         }
 
         preparePlayer()
 
-        println("RESULT on start is playing ${mediaViewModel.getIsPlaying()}")
-
         if (mediaViewModel.getIsPlaying()) player?.play()
-
-        println("RESULT ONSTART")
     }
 
     override fun onResume() {
         super.onResume()
-        hideSystemUi()
         if (player == null) {
             preparePlayer()
         }
 
-        println("RESULT on resume is playing ${mediaViewModel.getIsPlaying()}")
         if (mediaViewModel.getIsPlaying()) player?.play()
-        println("RESULT ONRESUME")
     }
 
     override fun onPause() {
         super.onPause()
 
-        showSystemUi()
-
-        println("RESULT on pause is playing ${player!!.isPlaying}")
-
         player?.let { mediaViewModel.setIsPlaying(it.isPlaying) }
-
-//        if (!requireActivity().isChangingConfigurations) {
-//            player?.pause()
-//        }
-
-        println("RESULT ONPAUSE")
-    }
-
-    override fun onStop() {
-        super.onStop()
-
-        println("RESULT onStop is playing ${player!!.isPlaying}")
-        println("RESULT ONSTOP")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        println("RESULT ONDESTROY")
 
         if (!requireActivity().isChangingConfigurations) {
             releasePlayer()
@@ -387,8 +378,6 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-
-        println("RESULT onSaveInstanceState ${requireActivity().isChangingConfigurations}")
 
         outState.putBoolean("isConfigurationChange", requireActivity().isChangingConfigurations);
     }

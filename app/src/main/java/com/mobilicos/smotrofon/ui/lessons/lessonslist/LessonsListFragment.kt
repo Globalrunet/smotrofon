@@ -189,7 +189,7 @@ class LessonsListFragment : Fragment(), MenuProvider, OnClickListItemElement<Les
 
     override fun clickOnListItemElement(element: Lesson, type: Int, position: Int) {
         lessonsListViewModel.changedPosition = position
-        val action = LessonsContentFragmentDirections.actionLessonsToLessonInfo(element.ident)
+        val action = LessonsContentFragmentDirections.actionLessonsToLessonInfo(commentsCounter = element.commentsCount, ident = element.ident, objectId = element.id)
         lessonsContentViewModel.currentTab = 0
         lessonsListViewModel.searchString = searchView.query.toString()
         println("RESULT ONCLICK ${lessonsListViewModel.searchString}")

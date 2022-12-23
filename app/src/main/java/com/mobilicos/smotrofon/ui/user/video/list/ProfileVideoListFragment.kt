@@ -167,7 +167,7 @@ class ProfileVideoListFragment : Fragment(), MenuProvider, OnClickListItemElemen
         }
     }
 
-    fun showRemoveDialog(element: Media, position: Int) {
+    private fun showRemoveDialog(element: Media, position: Int) {
         context?.let {
 
             mediaListViewModel.isRemoveDialogShown = true
@@ -178,12 +178,12 @@ class ProfileVideoListFragment : Fragment(), MenuProvider, OnClickListItemElemen
             removeAlertDialog = MaterialAlertDialogBuilder(it)
                 .setTitle(resources.getString(R.string.dialog_remove_video_title))
                 .setMessage(element.title)
-                .setNegativeButton(resources.getString(R.string.dialog_remove_negative_button_title)) { dialog, which ->
+                .setNegativeButton(resources.getString(R.string.dialog_remove_negative_button_title)) { _, _ ->
                     mediaListViewModel.isRemoveDialogShown = false
                     mediaListViewModel.currentElement = null
                     mediaListViewModel.currentPosition = -1
                 }
-                .setPositiveButton(resources.getString(R.string.dialog_remove_positive_button_title)) { dialog, which ->
+                .setPositiveButton(resources.getString(R.string.dialog_remove_positive_button_title)) { _, _ ->
                     mediaListViewModel.removeVideo(id = id)
                     mediaListViewModel.isRemoveDialogShown = false
                     mediaListViewModel.currentElement = null

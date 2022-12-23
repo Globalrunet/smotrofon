@@ -132,4 +132,18 @@
     <string name="bottom_sheet_promo_button_text">Поделиться</string>
     <string name="bottom_sheet_promo_title">Отключить рекламу</string>
     <string name="login_divider_text">Если нет аккаунта, то</string>
+
+    <string name="fragment_layout_comments_header">Комментарии: %1$d</string>
+    <string name="comments_add_comment_title">Добавить комментарий</string>
+    <string name="comments_add_comment_hint">Введите комментарий</string>
+    <string name="comments_add_comment_success">Комментарий добавлен</string>
+    <string name="comments_add_comment_error">Произошла ошибка при добавлении комментария</string>
+    <string name="comments_remove_comment_success">Комментарий удален</string>
+    <string name="comments_remove_comment_error">Произошла ошибка при удалении комментария</string>
+    <string name="dialog_remove_comment_title">Удалить комментарий?</string>
+    <string name="comments_edit_comment_success">Комментарий изменен</string>
+    <string name="comments_edit_comment_error">Произошла ошибка при редактировании комментария</string>
+    <string name="comments_list_header">Комментарии (%1$d)</string>
+
+    <string name="need_account">Войдите в систему или зарегистрируйтесь</string>
 </resources>

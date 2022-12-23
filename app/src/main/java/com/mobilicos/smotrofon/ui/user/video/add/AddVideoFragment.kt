@@ -280,28 +280,23 @@ class AddVideoFragment : Fragment() {
         }
     }
 
-    fun openSelectImageForResult() {
+    private fun openSelectImageForResult() {
         Log.e("START SELECTING", "IMG")
 
         if (isAllPermissionsGranted()) {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.type = "image/*"
-//            val mimeTypes = arrayOf("image/jpeg", "image/png")
-//            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
 
             resultLauncher.launch(intent)
         }
     }
 
-    fun openSelectVideoForResult() {
+    private fun openSelectVideoForResult() {
         Log.e("START SELECTING", "VIDEO")
 
         if (isAllPermissionsGranted()) {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
             intent.type = "video/*"
-//            intent.type = "video/*"
-//            val mimeTypes = arrayOf("image/jpeg", "image/png")
-//            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
 
             resultVideoLauncher.launch(intent)
         }

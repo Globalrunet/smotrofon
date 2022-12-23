@@ -127,7 +127,6 @@ class MainActivity : AppCompatActivity() {
         // Setup the ActionBar with navController and 3 top level destinations
         appBarConfiguration = AppBarConfiguration(setOf(R.id.lessonsScreen,
             R.id.mediaScreen,
-            R.id.coursesContentScreen,
             R.id.channelsScreen,
             R.id.profileScreen))
 

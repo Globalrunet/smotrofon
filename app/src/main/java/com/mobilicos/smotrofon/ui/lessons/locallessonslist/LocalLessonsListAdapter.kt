@@ -15,6 +15,7 @@ import com.mobilicos.smotrofon.databinding.ItemGreedLoadedLessonBinding
 import com.mobilicos.smotrofon.ui.interfaces.OnClickListItemElement
 import com.mobilicos.smotrofon.util.FileUtil
 import com.mobilicos.smotrofon.util.loadBitmap
+import com.mobilicos.smotrofon.util.visible
 import java.io.File
 
 class LocalLessonsListAdapter(val listener: OnClickListItemElement<Item>) :
@@ -71,6 +72,9 @@ class LocalLessonsListAdapter(val listener: OnClickListItemElement<Item>) :
 
             poster.loadBitmap(getImageBitmap(item))
             title.text = item.title
+
+            likesButton.visible(false)
+            commentsButton.visible(false)
         }
     }
 
@@ -86,6 +90,9 @@ class LocalLessonsListAdapter(val listener: OnClickListItemElement<Item>) :
 
             poster.loadBitmap(getImageBitmap(item))
             title.text = item.title
+
+            likesButton.visible(false)
+            commentsButton.visible(false)
         }
     }
 

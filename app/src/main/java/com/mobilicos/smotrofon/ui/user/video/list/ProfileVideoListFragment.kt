@@ -243,7 +243,7 @@ class ProfileVideoListFragment : Fragment(), MenuProvider, OnClickListItemElemen
     }
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        return true
+        return false
     }
 
     private fun showError(msg: String) {

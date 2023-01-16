@@ -42,7 +42,7 @@ class StepsInfoViewModel @Inject constructor() : ViewModel() {
     }
 
     fun increaseFrame() {
-        currentFrame++
+        currentFrame ++
     }
 
     fun hasCurrentFrame(): Boolean {

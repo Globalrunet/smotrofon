@@ -1,10 +1,13 @@
 package com.mobilicos.smotrofon.ui.lessons.lessoninfo
 
 import android.content.ContentValues.TAG
+import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mobilicos.smotrofon.Config
 import com.mobilicos.smotrofon.data.LessonRepository
+import com.mobilicos.smotrofon.data.LessonRepository.DownloadState
 import com.mobilicos.smotrofon.data.models.Item
 import com.mobilicos.smotrofon.data.models.LessonItem
 import com.mobilicos.smotrofon.model.Result
@@ -27,6 +30,10 @@ class LessonInfoViewModel @Inject constructor(
 
     private val _downloadLessonResult = MutableStateFlow<Result<ResponseBody>>(Result.ready())
     val downloadLessonResult: StateFlow<Result<ResponseBody>> = _downloadLessonResult
+
+    private val _downloadLessonStreamResult = MutableStateFlow<DownloadState>(DownloadState.Ready)
+    val downloadLessonStreamResult: StateFlow<DownloadState> = _downloadLessonStreamResult
+
     private lateinit var fileToSaveFiles: File
     private lateinit var currentLanguage: String
 
@@ -54,7 +61,7 @@ class LessonInfoViewModel @Inject constructor(
 
     fun downloadLessonByIdent(ident: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            lessonRepository.downloadLessonByIdent(ident=ident).collect {
+            lessonRepository.downloadLessonByIdent(ident = ident).collect {
                 if (it.status == Result.Status.SUCCESS) {
                     val result = writeResponseBodyToDisk(ident, it.data as ResponseBody)
                     if (result) {
@@ -66,6 +73,23 @@ class LessonInfoViewModel @Inject constructor(
                 }
                 _downloadLessonResult.value = it
             }
+        }
+    }
+
+    fun downloadLessonByIdentStream(ident: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (_downloadLessonStreamResult.value !is DownloadState.Downloading) {
+                lessonRepository.downloadLessonByIdentStream(ident = ident, fileToSaveFiles = fileToSaveFiles).collect { downloadState ->
+                    if (downloadState is DownloadState.Finished) {
+                        val courseLessonItem = getItem(ident)
+                        if (courseLessonItem != null) {
+                            insertLessonInfoToDb(lesson = courseLessonItem.item)
+                        }
+                    }
+                    _downloadLessonStreamResult.value = downloadState
+                }
+            }
+
         }
     }
 

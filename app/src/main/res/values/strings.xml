@@ -146,4 +146,17 @@
     <string name="comments_list_header">Comments (%1$d)</string>
 
     <string name="need_account">Log in or register</string>
+
+    <string name="menu_item_block_user">Block user</string>
+    <string name="menu_item_complaint_comment">Complaint</string>
+
+    <string name="comments_complaint_success">Complaint sent successfully</string>
+    <string name="comments_complaint_error">An error occurred while sending complaint</string>
+    <string name="dialog_complaint_title">Send complaint?</string>
+    <string name="dialog_complaint_negative_button_title">Cancel</string>
+    <string name="dialog_complaint_positive_button_title">Send</string>
+
+    <string name="loading_progress_title">Loading… [%1$d / 100]</string>
+
+    <string name="channel_notification_default_name">Default notification channel</string>
 </resources>

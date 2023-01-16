@@ -22,7 +22,10 @@ object NetworkModule {
     @Provides
     fun provideHTTPLoggingInterceptor(): HttpLoggingInterceptor {
         val interceptor = HttpLoggingInterceptor()
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+
+//        val loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS)
+
+        interceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS)
         return interceptor;
     }
 

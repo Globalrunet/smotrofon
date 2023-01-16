@@ -252,11 +252,6 @@ class ProfileAudioListFragment : Fragment(), MenuProvider, OnClickListItemElemen
         }.show()
     }
 
-    override fun onStart() {
-        super.onStart()
-//        (requireActivity() as AppCompatActivity).supportActionBar?.show()
-    }
-
     override fun onResume() {
         super.onResume()
 

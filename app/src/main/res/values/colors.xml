@@ -9,7 +9,7 @@
     <color name="menu_element_inactive">#DDDDDD</color>
     <color name="transparent">#00000000</color>
     <color name="grey">#777777</color>
-    <color name="grey_light">#BBBBBB</color>
+    <color name="grey_light">#DDDDDD</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="seed">#FF006E</color>

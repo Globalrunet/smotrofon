@@ -21,6 +21,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
+import com.appodeal.ads.Appodeal
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
@@ -64,7 +65,6 @@ class LessonsListFragment : Fragment(), MenuProvider, OnClickListItemElement<Les
     }
 
     private fun showPromoBottomSheet() {
-
         val sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE)
         val sharedStatus = sharedPref.getBoolean("promo_share_app_status", false)
         val rand =  Random(System.nanoTime()).nextInt(0, 3)

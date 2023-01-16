@@ -146,4 +146,16 @@
     <string name="comments_list_header">Комментарии (%1$d)</string>
 
     <string name="need_account">Войдите в систему или зарегистрируйтесь</string>
+
+    <string name="menu_item_block_user">Блокировать</string>
+    <string name="menu_item_complaint_comment">Пожаловаться</string>
+
+    <string name="comments_complaint_success">Жалоба успешно отправлена</string>
+    <string name="comments_complaint_error">Произошла ошибка при отправке жалобы</string>
+    <string name="dialog_complaint_title">Отправить жалобу?</string>
+    <string name="dialog_complaint_negative_button_title">Отменить</string>
+    <string name="dialog_complaint_positive_button_title">Отправить</string>
+
+    <string name="loading_progress_title">Загрузка… [%1$d / 100]</string>
+    <string name="channel_notification_default_name">Основные уведомления</string>
 </resources>

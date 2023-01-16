@@ -3,6 +3,7 @@ package com.mobilicos.smotrofon.ui.lessons.stepsinfo
 import android.animation.ValueAnimator
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.ConfigurationCompat
@@ -10,6 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.appodeal.ads.Appodeal
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.mobilicos.smotrofon.Config
 import com.mobilicos.smotrofon.R
 import com.mobilicos.smotrofon.data.models.LessonItem
 import com.mobilicos.smotrofon.databinding.FragmentStepsInfoBinding
@@ -20,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.io.BufferedReader
 import java.io.File
 import java.util.*
+import kotlin.random.Random
 
 @AndroidEntryPoint
 class StepsInfoFragment : Fragment(), View.OnClickListener {
@@ -32,6 +40,8 @@ class StepsInfoFragment : Fragment(), View.OnClickListener {
     private var lessonItem: LessonItem? = null
     private var timer: Timer? = null
     private var descriptionContainerHeight: Int = 0
+    private var interstitial: InterstitialAd? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +74,7 @@ class StepsInfoFragment : Fragment(), View.OnClickListener {
         stepsInfoViewModel.currentFrame = 0
         updateUI()
         animateStepContent()
+        initAdmobInterstitialAd()
     }
 
     private fun updateUI() {
@@ -98,6 +109,10 @@ class StepsInfoFragment : Fragment(), View.OnClickListener {
             } else {
                 findNavController().popBackStack()
             }
+        }
+
+        if (!stepsInfoViewModel.hasNextStep()) {
+            showAdmobInterstitial()
         }
 
         stepsInfoViewModel.currentFrame = 0
@@ -190,6 +205,45 @@ class StepsInfoFragment : Fragment(), View.OnClickListener {
         } else {
             binding.description.text = ""
             binding.descriptionContainer.visibility = View.GONE
+        }
+    }
+
+    private fun showAppodealInterstitial() {
+        val rand =  Random(System.nanoTime()).nextInt(0, 2)
+
+        if (rand != 0) return
+        if(Appodeal.isLoaded(Appodeal.INTERSTITIAL)) {
+            Appodeal.show(requireActivity(), Appodeal.INTERSTITIAL)
+        }
+    }
+
+    private fun showAdmobInterstitial() {
+        val rand =  Random(System.nanoTime()).nextInt(0, 2)
+
+        if (rand != 0) return
+        if (interstitial != null) interstitial?.show(requireActivity())
+    }
+
+    private fun initAdmobInterstitialAd() {
+        try {
+            val admobInterstitialId = Config.ADMOB_INTERSTITIAL_ID
+            if (admobInterstitialId.isNotEmpty()) {
+                val adRequest = AdRequest.Builder().build()
+                InterstitialAd.load(requireActivity(), admobInterstitialId, adRequest,
+                    object : InterstitialAdLoadCallback() {
+                        override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                            Log.e("AD LOADED", "LOADED")
+                            interstitial = interstitialAd
+                        }
+
+                        override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                            Log.e("AD LOADED ERROR", loadAdError.message)
+                            interstitial = null
+                        }
+                    })
+            }
+        } catch (e: Exception) {
+            e.localizedMessage?.let { Log.e("Error:", it) }
         }
     }
 

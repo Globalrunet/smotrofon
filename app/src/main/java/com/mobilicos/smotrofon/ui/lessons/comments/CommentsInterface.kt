@@ -13,3 +13,9 @@ interface CommentsInterface {
 
     fun setTotalCommentsCounter(counter: Int)
 }
+
+interface OptionsMenuClickListener<T> {
+    fun onOptionsMenuBlockClicked(item: T)
+
+    fun onOptionsMenuComplaintClicked(item: T)
+}

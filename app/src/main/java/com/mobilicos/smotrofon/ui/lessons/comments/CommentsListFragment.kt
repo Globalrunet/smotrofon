@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
+import android.view.ContextMenu.ContextMenuInfo
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -33,8 +34,9 @@ import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
+
 @AndroidEntryPoint
-class CommentsListFragment : BottomSheetDialogFragment(), CommentsInterface {
+class CommentsListFragment : BottomSheetDialogFragment(), CommentsInterface, OptionsMenuClickListener<Comment> {
 
     private var commentsListAdapter: CommentsListAdapter? = null
     lateinit var binding: BottomSheetFragmentListBinding
@@ -434,7 +436,7 @@ class CommentsListFragment : BottomSheetDialogFragment(), CommentsInterface {
 
     private fun setSwipeRefreshAdapter() {
         if (commentsListAdapter == null) {
-            commentsListAdapter = CommentsListAdapter(listener = this)
+            commentsListAdapter = CommentsListAdapter(listener = this, menuClickListener = this)
         }
         binding.swipeRefreshLayout.setOnRefreshListener {
             commentsListAdapter?.refresh()
@@ -462,12 +464,33 @@ class CommentsListFragment : BottomSheetDialogFragment(), CommentsInterface {
             requireContext().getString(R.string.comments_list_header, counter)
     }
 
-
-
     private fun showMessage(msg: String?) {
         if (msg != null) {
             Snackbar.make(binding.root, msg, Snackbar.ANIMATION_MODE_SLIDE).setAction("OK!") {
             }.show()
+        }
+    }
+
+    override fun onOptionsMenuBlockClicked(item: Comment) {
+        println("MENU CLICKED BLOCK $item")
+    }
+
+    override fun onOptionsMenuComplaintClicked(item: Comment) {
+        context?.let {
+
+            removeAlertDialog = MaterialAlertDialogBuilder(it)
+                .setTitle(resources.getString(R.string.dialog_complaint_title))
+                .setMessage(item.text.take(120))
+                .setNegativeButton(resources.getString(R.string.dialog_complaint_negative_button_title)) { dialog, which ->
+
+                }
+                .setPositiveButton(resources.getString(R.string.dialog_complaint_positive_button_title)) { dialog, which ->
+//                    commentsListViewModel.removeComment(key = userKey, comment_id = item.id)
+                }
+                .setCancelable(true)
+                .setOnDismissListener {
+                }
+                .show()
         }
     }
 }

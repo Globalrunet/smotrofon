@@ -61,13 +61,13 @@ class ChannelsListAdapter(val listener: OnClickListItemElement<Channel>) :
                 listener.clickOnListItemElement(item, 0)
             }
 
-            buttonVideo.text = context.getString(R.string.videos)
-            buttonVideo.setOnClickListener {
+//            videoElement.text = context.getString(R.string.videos)
+            videoElement.setOnClickListener {
                 listener.clickOnListItemElement(item, 0)
             }
 
-            buttonAudio.text = context.getString(R.string.audio)
-            buttonAudio.setOnClickListener {
+//            audioElement.text = context.getString(R.string.audio)
+            audioElement.setOnClickListener {
                 listener.clickOnListItemElement(item, 1)
             }
 

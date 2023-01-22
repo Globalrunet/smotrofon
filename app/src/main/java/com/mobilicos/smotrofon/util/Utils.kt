@@ -78,9 +78,12 @@ fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeig
     val width = options.outWidth
     var inSampleSize = 1
     if (height > reqHeight || width > reqWidth) {
-        while (height / inSampleSize > reqHeight && width / inSampleSize > reqWidth) {
+        while (height / inSampleSize > reqHeight || width / inSampleSize > reqWidth) {
             inSampleSize *= 2
         }
     }
+
+    println("COMMENTS INSAMPLESIZE $inSampleSize // ${options.outHeight} // ${options.outWidth}")
+
     return inSampleSize
 }

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Video Audio Creativity</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="videoviewer_video_description">Views %1$d! / Posted by %2$s.</string>
+    <string name="videoviewer_video_description">Views %1$d / Posted by %2$s</string>
     <string name="bottom_sheet_dialog_header">Description</string>
     <string name="subscribe_title">SUBSCRIBE</string>
     <string name="videos">Videos</string>
@@ -17,6 +17,7 @@
     <string name="menu_item_channels">Channels</string>
     <string name="menu_item_messages">Chat</string>
     <string name="menu_item_profile">Profile</string>
+    <string name="menu_item_license">License</string>
     <string name="menu_item_courses">Courses</string>
     <string name="menu_item_war">Lessons</string>
     <string name="content_channel_icon">Channel Icon</string>
@@ -159,4 +160,6 @@
     <string name="loading_progress_title">Loading… [%1$d / 100]</string>
 
     <string name="channel_notification_default_name">Default notification channel</string>
+
+    <string name="license_link"><![CDATA[By continuing, you agree to our <u>Terms of Use</u> and acknowledge that you have read our Privacy Policy.]]></string>
 </resources>

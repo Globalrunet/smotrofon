@@ -25,6 +25,10 @@
 
     <style name="SettingsCardView" parent="Widget.MaterialComponents.CardView">
         <item name="cardBackgroundColor">@color/white</item>
-    </style>s
+    </style>
+
+    <style name="rounded_corner">
+        <item name="cornerSize">20dp</item>
+    </style>
 
 </resources>

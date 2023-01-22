@@ -168,7 +168,7 @@ class LessonsListFragment : Fragment(), MenuProvider, OnClickListItemElement<Les
 
                         if (it.source.refresh is LoadState.NotLoading
                             && it.append.endOfPaginationReached
-                            && lessonsListAdapter?.itemCount ?: 0 < 1
+                            && (lessonsListAdapter?.itemCount ?: 0) < 1
                         ) {
                             binding!!.recyclerView.visible(false)
                             binding!!.emptyView.visible(true)

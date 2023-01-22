@@ -138,5 +138,15 @@
         app:layout_constraintEnd_toStartOf="@+id/edit"
         app:layout_constraintTop_toBottomOf="@+id/descriptionBlock"/>
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/img"
+        android:visibility="gone"
+        android:layout_marginTop="10dip"
+        app:shapeAppearanceOverlay="@style/rounded_corner"
+        android:layout_width="0dip"
+        android:layout_height="0dip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/remove"
+        app:layout_constraintBaseline_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

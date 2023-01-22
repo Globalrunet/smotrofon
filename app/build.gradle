@@ -16,11 +16,17 @@ android {
         applicationId "com.mobilicos.smotrofon"
         minSdk buildConfig.minSdk
         targetSdk buildConfig.targetSdk
-        versionCode 14
-        versionName "1.14"
+        versionCode 18
+        versionName "1.18"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "API_KEY", "\"{your_tmdb_api_key_here}\"")
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
     }
 
     buildTypes {

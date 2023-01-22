@@ -1,7 +1,10 @@
 package com.mobilicos.smotrofon.ui.lessons.lessoninfo
 
+import android.animation.ValueAnimator
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -43,6 +46,7 @@ class LessonInfoFragment : Fragment() {
     private var elementId: Int = 0
     private var initialCommentsCount: Int = 0
     private var interstitial: InterstitialAd? = null
+    private var descriptionContainerHeight: Int = 0
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -80,7 +84,11 @@ class LessonInfoFragment : Fragment() {
         }
 
         binding.begin.setOnClickListener {
-            val action = LessonInfoFragmentDirections.actionLessonInfoToStepsInfo(ident = ident, objectId = elementId)
+            val action = LessonInfoFragmentDirections.actionLessonInfoToStepsInfo(
+                commentsCounter = initialCommentsCount,
+                ident = ident,
+                objectId = elementId)
+
             findNavController().navigate(action)
             showAdmobInterstitial()
         }
@@ -104,6 +112,14 @@ class LessonInfoFragment : Fragment() {
         binding.like.count = 3
         binding.like.setOnClickListener {
             binding.like.increase()
+        }
+
+        binding.apple.setOnClickListener {
+            goToAppstoreAppPage()
+        }
+
+        binding.youtube.setOnClickListener {
+            goToYoutubePage()
         }
 
         initAdmobInterstitialAd()
@@ -187,7 +203,8 @@ class LessonInfoFragment : Fragment() {
         with (binding) {
             img.setImageBitmap(bm)
             begin.isEnabled = true
-            description.text = lessonItem?.item?.text
+            descriptionContainerHeight = binding.descriptionContainer.layoutParams.height
+            setDescription(lessonItem?.item?.text)
         }
 
         (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
@@ -231,6 +248,48 @@ class LessonInfoFragment : Fragment() {
         } catch (e: Exception) {
             e.localizedMessage?.let { Log.e("Error:", it) }
         }
+    }
+
+    private fun setDescription(text: String?) {
+        val textLength: Int = text?.length ?: 0
+        binding.description.text = text
+
+        if (textLength > 3) {
+            binding.descriptionContainer.visibility = View.VISIBLE
+            val viewHeight: Int = when {
+                textLength > 400 -> {
+                    descriptionContainerHeight * 2
+                }
+                textLength > 200 -> {
+                    descriptionContainerHeight
+                }
+                else -> {
+                    descriptionContainerHeight / 2
+                }
+            }
+            val anim = ValueAnimator.ofInt(0, viewHeight)
+            anim.addUpdateListener { valueAnimator ->
+                val value = valueAnimator.animatedValue as Int
+                val layoutParams: ViewGroup.LayoutParams =
+                    binding.descriptionContainer.layoutParams
+                layoutParams.height = value
+                binding.descriptionContainer.layoutParams = layoutParams
+            }
+            anim.duration = 500
+            anim.start()
+        } else {
+            binding.descriptionContainer.visibility = View.GONE
+        }
+    }
+
+    private fun goToAppstoreAppPage() {
+        val url = "https://apps.apple.com/us/app/how-to-make-origami/id472936700"
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    }
+
+    private fun goToYoutubePage() {
+        val url = "https://www.youtube.com/@user-fc7xv1ci6y/videos"
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
     }
 
     override fun onStart() {

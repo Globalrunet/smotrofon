@@ -20,6 +20,7 @@ import com.mobilicos.smotrofon.Config
 import com.mobilicos.smotrofon.R
 import com.mobilicos.smotrofon.data.models.LessonItem
 import com.mobilicos.smotrofon.databinding.FragmentStepsInfoBinding
+import com.mobilicos.smotrofon.ui.lessons.comments.CommentsListFragment
 import com.mobilicos.smotrofon.util.FileUtil
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -35,7 +36,9 @@ class StepsInfoFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentStepsInfoBinding
     private val stepsInfoViewModel: StepsInfoViewModel by viewModels()
     private val args: StepsInfoFragmentArgs by navArgs()
-    private var ident: Int = 4000265
+    private var ident: Int = 0
+    private var elementId: Int = 0
+    private var initialCommentsCount: Int = 0
     private var animationInterval = 500L
     private var lessonItem: LessonItem? = null
     private var timer: Timer? = null
@@ -46,7 +49,11 @@ class StepsInfoFragment : Fragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initialCommentsCount = args.commentsCounter
         ident = args.ident
+        elementId = args.objectId
+
+        println("COMMENTS ARGS $initialCommentsCount // $ident // $elementId")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -61,6 +68,19 @@ class StepsInfoFragment : Fragment(), View.OnClickListener {
         binding.preview.setOnClickListener(this)
         binding.next.setOnClickListener(this)
         binding.replay.setOnClickListener(this)
+
+        binding.comments.count = 0
+        binding.comments.setOnClickListener {
+            val commentsFragment = CommentsListFragment()
+
+            val args = Bundle()
+            args.putString("current_app_label", "lesson")
+            args.putString("current_model", "item")
+            args.putInt("current_object_id", elementId)
+            commentsFragment.arguments = args
+            commentsFragment.show(requireActivity().supportFragmentManager, commentsFragment.tag)
+        }
+        binding.comments.count = initialCommentsCount
 
         descriptionContainerHeight = binding.descriptionContainer.layoutParams.height
 

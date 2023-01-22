@@ -6,6 +6,8 @@ import com.mobilicos.smotrofon.data.responses.CommentAddResponse
 import com.mobilicos.smotrofon.data.responses.CommentEditResponse
 import com.mobilicos.smotrofon.data.responses.CommentRemoveResponse
 import com.mobilicos.smotrofon.data.responses.CommentsListResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -24,15 +26,28 @@ interface CommentService {
         @Query("s") size: Int = 10
     ): Response<CommentsListResponse>
 
-    @FormUrlEncoded
+    @Multipart
+    @POST("api/comments/add/{app_label}/{model}/{object_id}/")
+    suspend fun addCommentDataOld(
+        @Path("app_label") app_label: String,
+        @Path("model") model: String,
+        @Path("object_id") object_id: Int,
+        @Part("k") key: String,
+        @Part("parent_id") parent_id: Int = 0,
+        @Part("text") text: String,
+        @Part image: MultipartBody.Part? = null
+    ): Response<CommentAddResponse>
+
+    @Multipart
     @POST("api/comments/add/{app_label}/{model}/{object_id}/")
     suspend fun addCommentData(
         @Path("app_label") app_label: String,
         @Path("model") model: String,
         @Path("object_id") object_id: Int,
-        @Field("k") key: String,
-        @Field("parent_id") parent_id: Int = 0,
-        @Field("text") text: String
+        @Part("k") key: RequestBody,
+        @Part("parent_id") parent_id: RequestBody,
+        @Part("text") text: RequestBody,
+        @Part image: MultipartBody.Part? = null
     ): Response<CommentAddResponse>
 
     @FormUrlEncoded

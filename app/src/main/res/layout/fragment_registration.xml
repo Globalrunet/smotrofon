@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
-    android:layout_gravity="center_vertical"
-    android:gravity="center_vertical">
+    android:layout_gravity="top"
+    android:gravity="top">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
@@ -15,7 +15,7 @@
         android:paddingLeft="@dimen/fragment_horizontal_margin"
         android:paddingTop="@dimen/fragment_vertical_margin"
         android:paddingRight="@dimen/fragment_horizontal_margin"
-        android:paddingBottom="@dimen/fragment_vertical_margin">
+        android:paddingBottom="160dip">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/firstnameLayout"
@@ -124,6 +124,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />
 
+        <TextView
+            android:id="@+id/license"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|start"
+            android:padding="16dp"
+            android:visibility="visible"
+            android:textStyle="normal"
+            android:textSize="14sp"
+            android:linksClickable="false"
+            android:autoLink="all"
+            android:textColor="@color/md_theme_light_primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registration"
+            android:text="@string/license_link" />
+
         <ProgressBar
             android:id="@+id/loading"
             android:layout_width="wrap_content"
@@ -136,6 +153,6 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@+id/passwordLayout"
             app:layout_constraintStart_toStartOf="@+id/passwordLayout"
-            app:layout_constraintTop_toBottomOf="@+id/registration"/>
+            app:layout_constraintTop_toBottomOf="@+id/license"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

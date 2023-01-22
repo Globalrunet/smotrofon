@@ -2,6 +2,7 @@ package com.mobilicos.smotrofon.ui.user.registration
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import com.mobilicos.smotrofon.util.afterTextChanged
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import com.mobilicos.smotrofon.model.Result
+import com.mobilicos.smotrofon.ui.user.license.LicenseFragmentDirections
 import com.mobilicos.smotrofon.ui.user.login.LoginUserFragment
 import com.mobilicos.smotrofon.ui.user.login.LoginUserFragmentDirections
 import com.mobilicos.smotrofon.util.visible
@@ -43,6 +45,13 @@ class RegistrationUserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         savedStateHandle = findNavController().previousBackStackEntry!!.savedStateHandle
         savedStateHandle[REGISTRATION_SUCCESSFUL] = false
+
+
+        binding.license?.text = Html.fromHtml(String.format(getString(R.string.license_link)))
+        binding.license?.setOnClickListener {
+            val action = RegistrationUserFragmentDirections.actionRegistrationToLicense()
+            findNavController().navigate(action)
+        }
 
         subscribeUI()
         registrationFormStateCollect()

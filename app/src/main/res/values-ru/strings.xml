@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Видео Аудио Творчество</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="videoviewer_video_description">Просмотров, %1$d! / Опубликовано %2$s.</string>
+    <string name="videoviewer_video_description">Просмотров %1$d / Опубликовано %2$s</string>
     <string name="bottom_sheet_dialog_header">Описание</string>
     <string name="subscribe_title">ПОДПИСАТЬСЯ</string>
     <string name="videos">Видео</string>
@@ -15,6 +15,7 @@
     <string name="menu_item_channels">Каналы</string>
     <string name="menu_item_messages">Чат</string>
     <string name="menu_item_profile">Профиль</string>
+    <string name="menu_item_license">Лицензия</string>
     <string name="menu_item_courses">Курсы</string>
     <string name="menu_item_war">Бойцу</string>
     <string name="menu_item_rate">Оценить</string>
@@ -158,4 +159,6 @@
 
     <string name="loading_progress_title">Загрузка… [%1$d / 100]</string>
     <string name="channel_notification_default_name">Основные уведомления</string>
+
+    <string name="license_link"><![CDATA[Продолжая, Вы соглашаетесь с нашими <u>Условиями использования</u> и подтверждаете, что прочли нашу Политику конфиденциальности.]]></string>
 </resources>

@@ -16,5 +16,6 @@ data class Comment (
     val replies_counter: Int,
     val user_id: Int,
     val user_full_name: String,
-    val user_icon: String
+    val user_icon: String,
+    val img: String = ""
 )

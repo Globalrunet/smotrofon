@@ -107,7 +107,7 @@ class VideoRemoteDataSource @Inject constructor(private val retrofit: Retrofit):
             defaultErrorMessage = "Error fetching Movie list")
     }
 
-    fun readChunkOfFileToByteArray(path: String, offset: Long): UploadVideoFileInfo {
+    private fun readChunkOfFileToByteArray(path: String, offset: Long): UploadVideoFileInfo {
         val file = File(path)
         var isEnd = false
         val ous = ByteArrayOutputStream()
@@ -138,7 +138,7 @@ class VideoRemoteDataSource @Inject constructor(private val retrofit: Retrofit):
             size = file.length())
     }
 
-    fun toMultiPartFile(name: String, filename: String, byteArray: ByteArray): MultipartBody.Part {
+    private fun toMultiPartFile(name: String, filename: String, byteArray: ByteArray): MultipartBody.Part {
         val reqFile: RequestBody = byteArray.toRequestBody("video/mp4".toMediaTypeOrNull(), 0, byteArray.size)
         return MultipartBody.Part.createFormData(
             name,

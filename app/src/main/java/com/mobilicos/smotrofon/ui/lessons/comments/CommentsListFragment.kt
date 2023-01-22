@@ -1,16 +1,29 @@
 package com.mobilicos.smotrofon.ui.lessons.comments
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
+import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.util.Log
 import android.view.*
-import android.view.ContextMenu.ContextMenuInfo
-import android.widget.FrameLayout
-import android.widget.ImageButton
-import android.widget.ImageView
+import android.widget.*
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -18,6 +31,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -25,6 +39,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import com.mobilicos.smotrofon.Config
 import com.mobilicos.smotrofon.R
 import com.mobilicos.smotrofon.data.models.Comment
 import com.mobilicos.smotrofon.databinding.BottomSheetFragmentListBinding
@@ -33,6 +48,10 @@ import com.mobilicos.smotrofon.util.*
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import kotlin.random.Random
 
 
 @AndroidEntryPoint
@@ -103,6 +122,21 @@ class CommentsListFragment : BottomSheetDialogFragment(), CommentsInterface, Opt
         }
     }
 
+    private var resultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result -> selectImage(result) }
+
+    @SuppressLint("IntentReset")
+    private fun openSelectImageForResult() {
+        Log.e("START SELECTING", "IMG")
+
+        if (isAllPermissionsGranted()) {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            intent.type = "image/*"
+
+            resultLauncher.launch(intent)
+        }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     fun setAddComment() {
         addCommentDialog =  BottomSheetDialog(requireContext())
@@ -110,6 +144,7 @@ class CommentsListFragment : BottomSheetDialogFragment(), CommentsInterface, Opt
             it.setContentView(R.layout.bottom_sheet_add_comment)
             val behavior = it.behavior
             val icon = it.findViewById<ImageView>(R.id.addCommentUserIcon)
+            val addPhoto = it.findViewById<ImageView>(R.id.photo)
             val send = it.findViewById<ImageButton>(R.id.send)
             val comment = it.findViewById<TextInputEditText>(R.id.addComment)
 
@@ -120,8 +155,13 @@ class CommentsListFragment : BottomSheetDialogFragment(), CommentsInterface, Opt
             }
 
             send?.setOnClickListener {
-                commentsListViewModel.addComment(key = userKey,
-                    text = comment?.text.toString())
+                val images = commentsListViewModel.getImagesList()
+                commentsListViewModel.addComment(key = userKey, text = comment?.text.toString(), images = images)
+            }
+
+            addPhoto?.setOnClickListener {
+                isAllPermissionsGranted()
+                openSelectImageForResult()
             }
 
             send?.isEnabled = false
@@ -129,6 +169,10 @@ class CommentsListFragment : BottomSheetDialogFragment(), CommentsInterface, Opt
                 this.afterTextChanged { text ->
                     send?.isEnabled = text.isNotEmpty()
                 }
+            }
+
+            addCommentDialog!!.setOnDismissListener {
+                commentsListViewModel.removeAllImage()
             }
 
             comment?.requestFocus()
@@ -215,7 +259,7 @@ class CommentsListFragment : BottomSheetDialogFragment(), CommentsInterface, Opt
                                 commentsListViewModel.clearAddCommentResult()
                             }
                             else -> {
-                                send?.isEnabled = true
+                                send?.isEnabled = comment?.text?.isNotEmpty() ?: false
                                 addCommentProgress?.visible(false)
                             }
                         }
@@ -263,7 +307,7 @@ class CommentsListFragment : BottomSheetDialogFragment(), CommentsInterface, Opt
                                 commentsListViewModel.clearEditCommentResult()
                             }
                             else -> {
-                                send?.isEnabled = true
+                                send?.isEnabled = comment?.text?.isNotEmpty() ?: false
                                 progress?.visible(false)
                             }
                         }
@@ -420,7 +464,7 @@ class CommentsListFragment : BottomSheetDialogFragment(), CommentsInterface, Opt
 
                         if (it.source.refresh is LoadState.NotLoading
                             && it.append.endOfPaginationReached
-                            && commentsListAdapter?.itemCount ?: 0 < 1
+                            && (commentsListAdapter?.itemCount ?: 0) < 1
                         ) {
                             binding.recyclerView.visible(false)
                             binding.emptyView.visible(true)
@@ -491,6 +535,166 @@ class CommentsListFragment : BottomSheetDialogFragment(), CommentsInterface, Opt
                 .setOnDismissListener {
                 }
                 .show()
+        }
+    }
+
+    private fun selectImage(result: ActivityResult) {
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            var fresult = false
+            val photoUri: Uri = generateFileUri()
+            val iconUri: Uri = generateFileUri()
+
+            if (data != null) {
+                val selectedImage = data.data
+                val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+
+                val cursor = requireContext().contentResolver.query(
+                    selectedImage!!,
+                    filePathColumn,
+                    null,
+                    null,
+                    null
+                )
+                cursor!!.moveToFirst()
+
+                val columnIndex = cursor.getColumnIndex(filePathColumn[0])
+                val picturePath = cursor.getString(columnIndex)
+
+                println("DATA PICTURE PATH $picturePath")
+                cursor.close()
+
+                if (picturePath != null) {
+                    var angle = 0
+                    try {
+                        val exif = ExifInterface(picturePath)
+                        val orientation = exif.getAttributeInt(
+                            ExifInterface.TAG_ORIENTATION,
+                            ExifInterface.ORIENTATION_NORMAL
+                        )
+                        if (orientation == ExifInterface.ORIENTATION_ROTATE_270) {
+                            angle = 270
+                        }
+                        if (orientation == ExifInterface.ORIENTATION_ROTATE_180) {
+                            angle = 180
+                        }
+                        if (orientation == ExifInterface.ORIENTATION_ROTATE_90) {
+                            angle = 90
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+
+                    val matrix = Matrix()
+                    matrix.postRotate(angle.toFloat())
+                    val options = BitmapFactory.Options()
+                    options.inJustDecodeBounds = true
+                    BitmapFactory.decodeFile(picturePath, options)
+                    options.inSampleSize = calculateInSampleSize(
+                        options,
+                        Config.POSTER_MAX_WIDTH,
+                        Config.POSTER_MAX_HEIGHT
+                    )
+                    options.inJustDecodeBounds = false
+                    Log.e("PATH", picturePath)
+                    var bm = BitmapFactory.decodeFile(picturePath, options)
+                    bm = Bitmap.createBitmap(bm, 0, 0, bm.width, bm.height, matrix, true)
+
+                    var out: FileOutputStream? = null
+                    try {
+                        out = FileOutputStream(photoUri.path)
+                        bm.compress(Bitmap.CompressFormat.JPEG, 90, out)
+                        println("BITMAP IMAGE ${bm.width} // ${bm.height}")
+
+                        out = FileOutputStream(iconUri.path)
+                        val iconBm = Bitmap.createScaledBitmap(bm, bm.width/5, bm.height/5, false)
+                        println("BITMAP ICON ${iconBm.width} // ${iconBm.height}")
+                        iconBm.compress(Bitmap.CompressFormat.JPEG, 90, out)
+
+                        println("BITMAP IMG AND ICON PATH: ${photoUri.path} // ${iconUri.path}")
+
+                        bm.recycle()
+                        iconBm.recycle()
+
+                        fresult = true
+                    } catch (e: Exception) {
+                        e.localizedMessage?.let { Log.e("ERROR", it) }
+                        e.printStackTrace()
+                    } finally {
+                        try {
+                            out?.close()
+                        } catch (e: IOException) {
+                            e.localizedMessage?.let { Log.e("ERROR", it) }
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            }
+
+            if (fresult) {
+                commentsListViewModel.removeAllImage()
+                commentsListViewModel.addImage(key = photoUri.path!!, image = photoUri.path!!, icon = iconUri.path!!)
+                addIconToImagesContainer(key = photoUri.path!!, iconPath = iconUri.path!!)
+            }
+        }
+    }
+
+    private fun addIconToImagesContainer(key: String, iconPath: String) {
+        val li = LayoutInflater.from(requireContext())
+        val view = li.inflate(R.layout.icon_image_view, null)
+        val iconView = view.findViewById<ImageView>(R.id.image)
+        val removeIconView = view.findViewById<ImageButton>(R.id.remove)
+        val bm = BitmapFactory.decodeFile(iconPath)
+
+        val squareBitmap: Bitmap = if (bm.width >= bm.height) {
+            Bitmap.createBitmap(bm, bm.width / 2 - bm.height / 2, 0, bm.height, bm.height)
+        } else {
+            Bitmap.createBitmap(bm, 0, bm.height / 2 - bm.width / 2, bm.width, bm.width)
+        }
+
+        Glide.with(requireContext()).load(squareBitmap).into(iconView)
+
+        addCommentDialog?.let {
+            val container =  it.findViewById<LinearLayout>(R.id.imagesContainerLinearLayout)
+            view.tag = key
+            container?.removeAllViews()
+            container?.addView(view)
+
+            removeIconView.setOnClickListener {
+                container?.removeView(view)
+                commentsListViewModel.removeImage(key = key)
+            }
+        }
+    }
+
+    private fun generateFileUri(): Uri {
+        val randomInt = (1000000..10000000).random()
+        val f = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+            "cache_pac_" + System.currentTimeMillis() + "_" + randomInt +".jpeg"
+        )
+        Log.e(ContentValues.TAG, "Generated fileName = $f")
+        return Uri.fromFile(f)
+    }
+
+    private fun isAllPermissionsGranted(): Boolean {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            Log.v(ContentValues.TAG, "Permission is granted")
+            return true
+        } else {
+            Log.v(ContentValues.TAG, "Permission is revoked")
+            ActivityCompat.requestPermissions(
+                requireActivity(), arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ), 1
+            )
+            return false
         }
     }
 }

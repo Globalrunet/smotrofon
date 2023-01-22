@@ -48,6 +48,8 @@ import com.mobilicos.smotrofon.util.visible
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 @AndroidEntryPoint
@@ -93,11 +95,19 @@ class MediaViewerFragment : BottomSheetDialogFragment(), Player.Listener, OnClic
 
         configureView()
 
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+        val outputFormatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm")
+        val dateAdded = LocalDateTime.parse(media.date_added, inputFormatter)
+        val formattedDateAdded = dateAdded.format(outputFormatter)
+
+//        val text = "${media.user_full_name} \u2022 ${media.views_count} \u2022 $formattedDateAdded"
+//        binding.videoDescription.text = text
+
         binding.title.text = media.title
         val videoDescription =  resources.getString(
             R.string.videoviewer_video_description,
             media.views_count,
-            media.date_added
+            formattedDateAdded
         )
 
         binding.videoDescription.text = videoDescription

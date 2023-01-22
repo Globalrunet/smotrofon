@@ -37,6 +37,7 @@ class CommentsListViewMode @Inject constructor(
     lateinit var currentAppLabel: String
     lateinit var currentModel: String
     private var currentObjectId: Int = 0
+    private var images: MutableMap<String, Pair<String, String>> = mutableMapOf()
 
     private val _queryData = MutableStateFlow(CommentsListQuery())
     private val queryData: StateFlow<CommentsListQuery> = _queryData.asStateFlow()
@@ -56,13 +57,31 @@ class CommentsListViewMode @Inject constructor(
         currentObjectId = object_id
     }
 
-    fun addComment(key: String, text: String, parent_id: Int = 0) {
+    fun addImage(key: String, image: String, icon: String) {
+        val pair = Pair(first = image, second = icon)
+        images[key] = pair
+    }
+
+    fun getImagesList(): List<String> {
+        return images.keys.toList()
+    }
+
+    fun removeImage(key: String) {
+        images.remove(key)
+    }
+
+    fun removeAllImage() {
+        images.clear()
+    }
+
+    fun addComment(key: String, text: String, images: List<String>, parent_id: Int = 0) {
         val query = CommentsAddQuery(key = key,
             app_label = currentAppLabel,
             model = currentModel,
             object_id = currentObjectId,
             text = text,
-            parent_id = parent_id)
+            parent_id = parent_id,
+            images = images)
         viewModelScope.launch {
             repository.addCommentData(q = query).collect {
                 _addCommentResponseData.value = it

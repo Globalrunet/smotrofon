@@ -79,4 +79,6 @@
     <color name="md_theme_dark_shadow">#000000</color>
     <color name="md_theme_dark_surfaceTint">#FFB2BF</color>
     <color name="md_theme_dark_surfaceTintColor">#FFB2BF</color>
+
+    <color name="colorTransparentPrimary">#AABC004F</color>
 </resources>

@@ -72,6 +72,30 @@
     </ScrollView>
 
     <com.andremion.counterfab.CounterFab
+        android:id="@+id/apple"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/apple_logo"
+        app:tint="@color/black"
+        android:layout_marginBottom="@dimen/step_button_marginbottom"
+        android:layout_marginEnd="@dimen/step_button_sidemargin"
+        app:layout_constraintBottom_toTopOf="@+id/youtube"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="TODO" />
+
+    <com.andremion.counterfab.CounterFab
+        android:id="@+id/youtube"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/youtube_activity"
+        app:tint="@color/black"
+        android:layout_marginBottom="@dimen/step_button_marginbottom"
+        android:layout_marginEnd="@dimen/step_button_sidemargin"
+        app:layout_constraintBottom_toTopOf="@+id/descriptionContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="TODO" />
+
+    <com.andremion.counterfab.CounterFab
         android:id="@+id/like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

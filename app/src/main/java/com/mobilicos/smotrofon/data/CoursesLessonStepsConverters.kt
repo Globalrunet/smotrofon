@@ -25,5 +25,4 @@ class CoursesLessonStepsConverters {
         }
         return intList
     }
-
 }

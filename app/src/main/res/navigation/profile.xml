@@ -79,6 +79,20 @@
         android:name="com.mobilicos.smotrofon.ui.user.registration.RegistrationUserFragment"
         android:label="@string/menu_item_profile"
         tools:layout="@layout/fragment_registration" >
+        <action
+            android:id="@+id/action_registration_to_license"
+            app:destination="@id/licenseScreen"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/licenseScreen"
+        android:name="com.mobilicos.smotrofon.ui.user.license.LicenseFragment"
+        android:label="@string/menu_item_license"
+        tools:layout="@layout/fragment_registration" >
     </fragment>
 
     <fragment

@@ -1,15 +1,24 @@
 package com.mobilicos.smotrofon.ui.lessons.comments
 
+import android.R.attr.left
+import android.R.attr.right
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.view.*
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.PopupMenu
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.mobilicos.smotrofon.R
 import com.mobilicos.smotrofon.data.models.Comment
-import com.mobilicos.smotrofon.data.models.Item
 import com.mobilicos.smotrofon.databinding.CommentItemBinding
 import com.mobilicos.smotrofon.util.CircleTransform
 import com.mobilicos.smotrofon.util.visible
@@ -57,6 +66,45 @@ class CommentsListAdapter(private var listener: CommentsInterface? = null,
                 Picasso.get()
                     .load(item.user_icon).transform(CircleTransform())
                     .into(userIcon)
+
+                img.visible(false)
+                if (item.img.isNotEmpty()) {
+                    Glide.with(context)
+                        .asBitmap()
+                        .load(item.img)
+                        .placeholder(R.drawable.placeholder)
+                        .error(R.drawable.placeholder)
+                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                        .into(object: CustomTarget<Bitmap>() {
+                            override fun onResourceReady(
+                                bm: Bitmap,
+                                transition: Transition<in Bitmap>?
+                            ) {
+
+                                val dm = Resources.getSystem().displayMetrics
+                                val width = dm.widthPixels
+
+                                println("COMMENT: ${bm.width} / ${bm.height} /  ${width} / ${img.layoutParams.width} / ${img.layoutParams.height} / ")
+
+                                if (bm.width >= bm.height) {
+                                    img.layoutParams.width = (width * 0.8).toInt()
+                                    img.layoutParams.height = (img.layoutParams.width *
+                                            (bm.height / bm.width.toDouble())).toInt()
+                                } else {
+                                    img.layoutParams.width = (width * 0.6).toInt()
+                                    img.layoutParams.height = (img.layoutParams.width *
+                                            (bm.height / bm.width.toDouble())).toInt()
+                                }
+
+                                img.setImageBitmap(bm)
+                                img.visible(true)
+                            }
+
+                            override fun onLoadCleared(placeholder: Drawable?) {
+                                TODO("Not yet implemented")
+                            }
+                        });
+                }
 
                 remove.setOnClickListener {
                     println("COMMENT ITEM $item")

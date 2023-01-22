@@ -2,7 +2,6 @@ package com.mobilicos.smotrofon.ui.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -14,6 +13,10 @@ import com.mobilicos.smotrofon.databinding.ItemVideoBinding
 import com.mobilicos.smotrofon.util.CircleTransform
 import com.mobilicos.smotrofon.util.loadImage
 import com.squareup.picasso.Picasso
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 interface OnClickMediaListElement {
@@ -56,7 +59,7 @@ class MediaListAdapter(private val cl: OnClickMediaListElement) :
     inner class MediaListViewHolder(private val binding: ItemVideoBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        @SuppressLint("SetTextI18n")
+        @SuppressLint("SetTextI18n", "SimpleDateFormat")
         fun bindElement(item: Media) = with(binding) {
             if (item.poster != "") {
                 poster.loadImage(item.poster)
@@ -70,8 +73,14 @@ class MediaListAdapter(private val cl: OnClickMediaListElement) :
             descriptionBlock.setOnClickListener {
                 cl.clickOnMediaListElement(item)
             }
+
+            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+            val outputFormatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm")
+            val dateAdded = LocalDateTime.parse(item.date_added, inputFormatter)
+            val formattedDateAdded = dateAdded.format(outputFormatter)
+
             title.text = item.title
-            description.text = "${item.user_full_name} / ${item.views_count} / ${item.date_added}"
+            description.text = "${item.user_full_name} \u2022 ${item.views_count} \u2022 $formattedDateAdded"
 
             Picasso.get()
                 .load(item.user_icon).transform(CircleTransform())

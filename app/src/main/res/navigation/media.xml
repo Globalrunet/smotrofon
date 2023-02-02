@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/mediaScreen"
-        android:name="com.mobilicos.smotrofon.ui.fragments.MediaListFragment"
+        android:name="com.mobilicos.smotrofon.ui.media.list.MediaListFragment"
         android:label="@string/menu_item_media"
         tools:layout="@layout/media_list">
         <action
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/userContentScreen"
-        android:name="com.mobilicos.smotrofon.ui.fragments.UserContentFragment"
+        android:name="com.mobilicos.smotrofon.ui.channels.content.UserContentFragment"
         android:label="@string/menu_item_media"
         tools:layout="@layout/fragment_messanger" />
 </navigation>

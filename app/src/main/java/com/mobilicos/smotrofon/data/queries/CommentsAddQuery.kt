@@ -9,5 +9,6 @@ data class CommentsAddQuery(
     val object_id: Int = 0,
     val parent_id: Int = 0,
     val key: String = "",
-    val text: String = ""
+    val text: String = "",
+    val images: List<String>? = null
 )

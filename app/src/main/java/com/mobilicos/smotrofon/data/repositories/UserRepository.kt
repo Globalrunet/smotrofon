@@ -1,15 +1,13 @@
 package com.mobilicos.smotrofon.data.repositories
 
-import com.mobilicos.smotrofon.data.models.MediaResponse
-import com.mobilicos.smotrofon.data.models.SuggestionResponse
-import com.mobilicos.smotrofon.data.models.UploadMediaPosterResponse
-import com.mobilicos.smotrofon.data.models.UserLogin
+import com.mobilicos.smotrofon.data.models.*
 import com.mobilicos.smotrofon.data.queries.UpdateUserPasswordQuery
 import com.mobilicos.smotrofon.data.queries.UpdateUsernamesQuery
 import com.mobilicos.smotrofon.data.queries.UploadMediaPosterQuery
 import com.mobilicos.smotrofon.data.queries.UploadUserImageQuery
 import com.mobilicos.smotrofon.data.remote.MediaRemoteDataSource
 import com.mobilicos.smotrofon.data.remote.UserRemoteDataSource
+import com.mobilicos.smotrofon.data.responses.SubscribeUserResponse
 import com.mobilicos.smotrofon.data.responses.UpdateUserPasswordResponse
 import com.mobilicos.smotrofon.data.responses.UpdateUsernamesResponse
 import com.mobilicos.smotrofon.data.responses.UploadUserImageResponse
@@ -63,6 +61,22 @@ class UserRepository @Inject constructor(
         return flow {
             emit(Result.loading())
             val result = userRemoteDataSource.uploadUserImage(q)
+            emit(result)
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun subscribeUser(key: String, otherUserId: Int): Flow<Result<SubscribeUserResponse>> {
+        return flow {
+            emit(Result.loading())
+            val result = userRemoteDataSource.subscribeUser(key = key, otherUserId = otherUserId)
+            emit(result)
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getUserData(id: Int): Flow<Result<User>> {
+        return flow {
+            emit(Result.loading())
+            val result = userRemoteDataSource.getUserData(id = id)
             emit(result)
         }.flowOn(Dispatchers.IO)
     }

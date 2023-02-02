@@ -7,7 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -15,19 +20,24 @@ import com.google.android.material.bottomappbar.BottomAppBar
 import com.mobilicos.smotrofon.R
 import com.mobilicos.smotrofon.data.models.UserLogin
 import com.mobilicos.smotrofon.databinding.FragmentProfileBinding
+import com.mobilicos.smotrofon.model.Result
+import com.mobilicos.smotrofon.ui.media.viewer.MediaViewModel
 import com.mobilicos.smotrofon.ui.user.login.LoginUserFragment
 import com.mobilicos.smotrofon.util.CircleTransform
 import com.mobilicos.smotrofon.util.visible
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
+    private val profileViewModel: ProfileViewModel by viewModels()
     private lateinit var navController: NavController
     private lateinit var binding: FragmentProfileBinding
     private var sharedPref: SharedPreferences? = null
+    private var userId: Int? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -36,7 +46,8 @@ class ProfileFragment : Fragment() {
         binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
 
         sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-        val userId = sharedPref?.getInt("user_id", 0)
+        userId = sharedPref?.getInt("user_id", 0)
+
         val currentBackStackEntry = navController.currentBackStackEntry!!
         val savedStateHandle = currentBackStackEntry.savedStateHandle
         var isNavigated = false
@@ -48,7 +59,7 @@ class ProfileFragment : Fragment() {
 
         if (isNavigated) {
             navigateToMain()
-        } else if (userId != null && userId > 0) {
+        } else if (userId != null && userId!! > 0) {
             makeUserUI()
         } else {
             navigateToLogin()
@@ -60,6 +71,8 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<BottomAppBar>(R.id.bottomNavigationView)?.visible(false)
+
+        getUserDataCollect()
     }
 
     private fun navigateToMain() {
@@ -70,11 +83,34 @@ class ProfileFragment : Fragment() {
         navController.navigate(navController.graph.startDestinationId, null, navOptions)
     }
 
+    private fun getUserDataCollect() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                profileViewModel.getUserDataResponseData.collect {
+                    when (it.status) {
+                        Result.Status.SUCCESS -> {
+                            if (it.data != null && it.data.result) {
+                                sharedPref?.edit()?.putInt("subscribers_count",
+                                    it.data.subscribers_count)
+                                    ?.apply()
+                                binding.subscribersCount.text = getString(R.string.subscribers_count,
+                                    it.data.subscribers_count.toString())
+                                binding.subscribersCount.visible(true)
+                            }
+                        }
+                        else -> {}
+                    }
+                }
+            }
+        }
+    }
+
     private fun makeUserUI() {
         sharedPref?.let {
-            val key = sharedPref!!.getString("key", "")
+            userId?.let { id ->
+                profileViewModel.getUserData(id = id)
+            }
 
-            binding.avatar
             Picasso.get()
                 .load(sharedPref!!.getString("user_icon", "")).transform(CircleTransform())
                 .into(binding.avatar)

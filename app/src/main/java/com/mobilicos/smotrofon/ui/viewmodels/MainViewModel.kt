@@ -1,7 +1,7 @@
 package com.mobilicos.smotrofon.ui.viewmodels
 
 import androidx.lifecycle.*
-import com.mobilicos.smotrofon.data.Repository
+import com.mobilicos.smotrofon.data.repositories.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.flowOn

@@ -1,5 +1,6 @@
 package com.mobilicos.smotrofon.ui.lessons.lessonslist
 
+import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.menu.MenuBuilder
 import androidx.core.os.ConfigurationCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -64,17 +66,16 @@ class LessonsListFragment : Fragment(), MenuProvider, OnClickListItemElement<Les
     }
 
     private fun showPromoBottomSheet() {
-
         val sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE)
         val sharedStatus = sharedPref.getBoolean("promo_share_app_status", false)
-        val rand =  Random(System.nanoTime()).nextInt(0, 3)
+        val rand =  Random(System.nanoTime()).nextInt(0, 1)
+        val userId = sharedPref?.getInt("user_id", 0)?: 0
 
-        if (sharedStatus || rand != 0) return
+        if (sharedStatus || rand != 0 || userId > 0) return
 
         val bottomSheetDialog = BottomSheetDialog(requireContext())
         val behavior = bottomSheetDialog.behavior
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_promo)
-        bottomSheetDialog.behavior
 
         val closeButton = bottomSheetDialog.findViewById<ImageButton>(R.id.icon_clear_down)
         val shareButton = bottomSheetDialog.findViewById<MaterialButton>(R.id.share_button)
@@ -105,11 +106,16 @@ class LessonsListFragment : Fragment(), MenuProvider, OnClickListItemElement<Les
 
         shareButton?.let {
             it.setOnClickListener {
-                shareApp()
+
+//                val action = LessonsContentFragmentDirections.actionLessonsToLessonInfo(commentsCounter = element.commentsCount, ident = element.ident, objectId = element.id)
+
+                findNavController().navigate(R.id.profile)
 
                 val editor = sharedPref.edit()
                 editor.putBoolean("promo_share_app_status", true)
                 editor.apply()
+
+                bottomSheetDialog.dismiss()
             }
         }
 
@@ -168,7 +174,7 @@ class LessonsListFragment : Fragment(), MenuProvider, OnClickListItemElement<Les
 
                         if (it.source.refresh is LoadState.NotLoading
                             && it.append.endOfPaginationReached
-                            && lessonsListAdapter?.itemCount ?: 0 < 1
+                            && (lessonsListAdapter?.itemCount ?: 0) < 1
                         ) {
                             binding!!.recyclerView.visible(false)
                             binding!!.emptyView.visible(true)
@@ -234,7 +240,11 @@ class LessonsListFragment : Fragment(), MenuProvider, OnClickListItemElement<Les
         }
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        if (menu is MenuBuilder) {
+            menu.setOptionalIconsVisible(true)
+        }
         menuInflater.inflate(R.menu.best_lessons_menu, menu)
 
         val search = menu.findItem(R.id.search)
@@ -275,13 +285,14 @@ class LessonsListFragment : Fragment(), MenuProvider, OnClickListItemElement<Les
                 val currentPosition = sharedPref.getInt("best_lessons_projects_position", 0)
 
                 val closeButton = requireActivity().findViewById<ImageButton>(R.id.icon_clear_down)
-                val bottomSheet = requireActivity().findViewById<FrameLayout>(R.id.bottom_sheet)
+                val bottomSheet =requireActivity().findViewById<FrameLayout>(R.id.bottom_sheet)
                 val sheetBehavior = BottomSheetBehavior.from(bottomSheet)
                 val listView = requireActivity().findViewById<ListView>(R.id.bottom_sheet_list_main)
                 val projects = resources.getStringArray(R.array.projects)
 
                 sheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-                    override fun onStateChanged(bottomSheet: View, newState: Int) {}
+                    override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    }
 
                     override fun onSlide(bottomSheet: View, slideOffset: Float) {
                         closeButton.rotation = slideOffset * 180

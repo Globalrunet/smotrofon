@@ -13,10 +13,8 @@
 
     <FrameLayout
         android:id="@+id/bottom_sheet"
-        style="@style/Widget.Material3.BottomSheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:layout_margin="0dip"
         android:padding="0dip">
 
@@ -72,6 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dip"
+                app:dividerColor="@color/grey_light"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/icon_clear_down" />

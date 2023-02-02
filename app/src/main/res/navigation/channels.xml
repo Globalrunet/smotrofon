@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/channelsScreen"
         android:menuCategory="secondary"
-        android:name="com.mobilicos.smotrofon.ui.fragments.ChannelsListFragment"
+        android:name="com.mobilicos.smotrofon.ui.channels.list.ChannelsListFragment"
         android:label="@string/menu_item_channels"
         tools:layout="@layout/channels_list">
         <action
@@ -38,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/channelUserContentScreen"
-        android:name="com.mobilicos.smotrofon.ui.fragments.UserContentFragment"
+        android:name="com.mobilicos.smotrofon.ui.channels.content.UserContentFragment"
         android:label="@string/menu_item_channels"
         tools:layout="@layout/fragment_messanger" />
 </navigation>

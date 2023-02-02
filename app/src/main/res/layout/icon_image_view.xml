@@ -1,0 +1,32 @@
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="20dp"
+    android:background="@color/transparent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image"
+        app:shapeAppearanceOverlay="@style/rounded_corner"
+        android:layout_marginBottom="15dip"
+        android:layout_marginStart="15dip"
+        android:layout_marginTop="15dip"
+        android:layout_marginEnd="10dip"
+        android:layout_width="70dip"
+        android:layout_height="70dip"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <ImageButton
+        android:id="@+id/remove"
+        app:tint="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:padding="10dp"
+        android:background="@drawable/button_rounded_transparent"
+        android:src="@drawable/delete_forever"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,8 +2,10 @@ package com.mobilicos.smotrofon.ui.user.audio.list
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuHost
@@ -22,13 +24,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.mobilicos.smotrofon.R
 import com.mobilicos.smotrofon.data.models.Audio
-import com.mobilicos.smotrofon.data.models.Media
 import com.mobilicos.smotrofon.databinding.ProfileAudiolistBinding
-import com.mobilicos.smotrofon.databinding.ProfileVideolistBinding
 import com.mobilicos.smotrofon.model.Result
 import com.mobilicos.smotrofon.ui.interfaces.OnClickListItemElement
 import com.mobilicos.smotrofon.ui.user.audio.edit.EditAudioViewModel
-import com.mobilicos.smotrofon.ui.user.video.edit.EditVideoViewModel
 import com.mobilicos.smotrofon.util.visible
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -169,7 +168,7 @@ class ProfileAudioListFragment : Fragment(), MenuProvider, OnClickListItemElemen
         }
     }
 
-    fun showRemoveDialog(element: Audio, position: Int) {
+    private fun showRemoveDialog(element: Audio, position: Int) {
         context?.let {
 
             mediaListViewModel.isRemoveDialogShown = true
@@ -245,17 +244,12 @@ class ProfileAudioListFragment : Fragment(), MenuProvider, OnClickListItemElemen
     }
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        return true
+        return false
     }
 
     private fun showError(msg: String) {
         Snackbar.make(binding!!.root, msg, Snackbar.LENGTH_INDEFINITE).setAction("DISMISS") {
         }.show()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        (requireActivity() as AppCompatActivity).supportActionBar?.show()
     }
 
     override fun onResume() {

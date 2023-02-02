@@ -22,5 +22,6 @@ data class Media (
     val user_id: Int,
     val user_full_name: String,
     val user_icon: String,
-    val user_gender: String
+    val user_gender: String,
+    val user_subscribers_count: Int = 0
 )

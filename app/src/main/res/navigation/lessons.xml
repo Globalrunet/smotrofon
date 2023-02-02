@@ -145,5 +145,13 @@
             android:name="ident"
             app:argType="integer"
             android:defaultValue="0" />
+        <argument
+            android:name="object_id"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="commentsCounter"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>

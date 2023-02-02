@@ -2,6 +2,7 @@ package com.mobilicos.smotrofon.di
 
 import android.content.Context
 import androidx.room.Room
+import com.mobilicos.smotrofon.room.dao.BlockedUserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,6 +11,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import com.mobilicos.smotrofon.room.dao.CoursesLessonDao
 import com.mobilicos.smotrofon.room.dao.LessonDao
 import com.mobilicos.smotrofon.room.db.AppDatabase
+import com.mobilicos.smotrofon.room.db.MIGRATION_1_2
 
 import javax.inject.Singleton
 
@@ -24,7 +26,7 @@ object DatabaseModule {
             appContext,
             AppDatabase::class.java,
             "database.db"
-        ).build()
+        ).addMigrations(MIGRATION_1_2).build()
     }
 
     @Provides
@@ -35,5 +37,10 @@ object DatabaseModule {
     @Provides
     fun provideCoursesLessonDao(appDatabase: AppDatabase): CoursesLessonDao {
         return appDatabase.coursesLessonDao()
+    }
+
+    @Provides
+    fun provideBlockedUserDao(appDatabase: AppDatabase): BlockedUserDao {
+        return appDatabase.blockedUserDao()
     }
 }

@@ -7,9 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.mobilicos.smotrofon.Config
-import com.mobilicos.smotrofon.data.CoursesLessonRepository
-import com.mobilicos.smotrofon.data.LessonRepository
-import com.mobilicos.smotrofon.data.models.CoursesLessonsListQuery
+import com.mobilicos.smotrofon.data.repositories.LessonRepository
 import com.mobilicos.smotrofon.data.remote.LessonsListDataSource
 import com.mobilicos.smotrofon.data.models.Lesson
 import com.mobilicos.smotrofon.data.models.LessonsListQuery

@@ -17,7 +17,7 @@ fun Char.repeat(count: Int): String = this.toString().repeat(count)
 
 fun View.showKeyboard() {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+    imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
 }
 
 fun View.hideKeyboard() {
@@ -78,9 +78,12 @@ fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeig
     val width = options.outWidth
     var inSampleSize = 1
     if (height > reqHeight || width > reqWidth) {
-        while (height / inSampleSize > reqHeight && width / inSampleSize > reqWidth) {
+        while (height / inSampleSize > reqHeight || width / inSampleSize > reqWidth) {
             inSampleSize *= 2
         }
     }
+
+    println("COMMENTS INSAMPLESIZE $inSampleSize // ${options.outHeight} // ${options.outWidth}")
+
     return inSampleSize
 }

@@ -1,13 +1,8 @@
 package com.mobilicos.smotrofon.data.remote
 
 import com.mobilicos.smotrofon.Config
-import com.mobilicos.smotrofon.data.models.MediaResponse
-import com.mobilicos.smotrofon.data.models.SuggestionResponse
-import com.mobilicos.smotrofon.data.models.UserLogin
 import com.mobilicos.smotrofon.model.Result
 import com.mobilicos.smotrofon.network.services.DownloadLessonService
-import com.mobilicos.smotrofon.network.services.UserService
-import com.mobilicos.smotrofon.network.services.VideoService
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import javax.inject.Inject
@@ -19,8 +14,15 @@ class LessonRemoteDataSource @Inject constructor(private val retrofit: Retrofit)
 
     suspend fun downloadLessonByIdent(ident: Int): Result<ResponseBody> {
         val downloadLessonService = retrofit.create(DownloadLessonService::class.java)
+        val fullUrl = "${Config.BASE_URL_STATIC}/apps-data/lessons/zip/$ident.zip"
         return getResponse(
-            request = { downloadLessonService.downloadLessonByIdent(ident=ident) },
+            request = { downloadLessonService.downloadLessonByIdent(url = fullUrl) },
             defaultErrorMessage = "Error fetching user login")
+    }
+
+    suspend fun downloadLessonByIdentStream(ident: Int): ResponseBody {
+        val downloadLessonService = retrofit.create(DownloadLessonService::class.java)
+        val fullUrl = "${Config.BASE_URL_STATIC}/apps-data/lessons/zip/$ident.zip"
+        return downloadLessonService.downloadLessonByIdentStreaming(url = fullUrl)
     }
 }

@@ -29,7 +29,7 @@
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/user_icon"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/more"
         android:padding="0dp">
 
         <TextView
@@ -56,6 +56,19 @@
             android:layout_marginEnd="10dip" />
     </LinearLayout>
 
+    <ImageButton
+        style="Widget.App.Button.OutlinedButton.IconOnly"
+        android:id="@+id/more"
+        android:padding="4dip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dip"
+        android:layout_marginEnd="0dip"
+        app:buttonTint="@color/grey"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/more_vert_24px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/descriptionBlock"/>
 
     <CheckBox
         android:id="@+id/like"
@@ -104,11 +117,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dip"
-        android:layout_marginEnd="32dip"
+        android:layout_marginEnd="0dip"
         app:buttonTint="@color/grey"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:src="@drawable/edit_24px"
-        app:layout_constraintEnd_toEndOf="@+id/descriptionBlock"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descriptionBlock"/>
 
     <ImageButton
@@ -118,12 +131,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dip"
-        android:layout_marginEnd="32dip"
+        android:layout_marginEnd="16dip"
         app:buttonTint="@color/grey"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:src="@drawable/delete_24px"
         app:layout_constraintEnd_toStartOf="@+id/edit"
         app:layout_constraintTop_toBottomOf="@+id/descriptionBlock"/>
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/img"
+        android:visibility="gone"
+        android:layout_marginTop="10dip"
+        app:shapeAppearanceOverlay="@style/rounded_corner"
+        android:layout_width="0dip"
+        android:layout_height="0dip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/remove"
+        app:layout_constraintBaseline_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

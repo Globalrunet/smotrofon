@@ -1,6 +1,5 @@
 package com.mobilicos.smotrofon.room.dao
 
-import androidx.recyclerview.widget.ConcatAdapter
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy

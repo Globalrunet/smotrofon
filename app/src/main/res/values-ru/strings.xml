@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">Видео Аудио Творчество</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="videoviewer_video_description">Просмотров, %1$d! / Опубликовано %2$s.</string>
+    <string name="videoviewer_video_description">Просмотров %1$d / Опубликовано %2$s</string>
     <string name="bottom_sheet_dialog_header">Описание</string>
     <string name="subscribe_title">ПОДПИСАТЬСЯ</string>
+    <string name="subscribed_title">ПОДПИСАНЫ</string>
+    <string name="subscribe_user_error">Произошла ошибка при выполнении запроса.</string>
+    <string name="subscribe_user_success">Вы успешно подписались на канал.</string>
+    <string name="unsubscribe_user_success">Вы успешно отписались от канала.</string>
     <string name="videos">Видео</string>
     <string name="audio">Аудио</string>
     <string name="courses_lessons">Курсы и уроки</string>
@@ -15,6 +19,7 @@
     <string name="menu_item_channels">Каналы</string>
     <string name="menu_item_messages">Чат</string>
     <string name="menu_item_profile">Профиль</string>
+    <string name="menu_item_license">Лицензия</string>
     <string name="menu_item_courses">Курсы</string>
     <string name="menu_item_war">Бойцу</string>
     <string name="menu_item_rate">Оценить</string>
@@ -127,10 +132,10 @@
         <item>@string/project_fitness</item>
     </string-array>
 
-    <string name="bottom_sheet_button_text">Поделиться</string>
-    <string name="bottom_sheet_promo_text">Поделись ссылкой на приложение в соцсети и получи полный доступ ко всем урокам без рекламы.</string>
-    <string name="bottom_sheet_promo_button_text">Поделиться</string>
-    <string name="bottom_sheet_promo_title">Отключить рекламу</string>
+    <string name="bottom_sheet_button_text">Создать акаунт</string>
+    <string name="bottom_sheet_promo_text">Будь в тренде! Зарегистрируйся в приложении, загружай свои творческие видео, аудио, становись популярным. Зарабатывай бонусы и популярность!</string>
+    <string name="bottom_sheet_promo_button_text">Регистрация</string>
+    <string name="bottom_sheet_promo_title">Создать акаунт</string>
     <string name="login_divider_text">Если нет аккаунта, то</string>
 
     <string name="fragment_layout_comments_header">Комментарии: %1$d</string>
@@ -146,4 +151,46 @@
     <string name="comments_list_header">Комментарии (%1$d)</string>
 
     <string name="need_account">Войдите в систему или зарегистрируйтесь</string>
+
+    <string name="menu_item_block_user">Блокировать</string>
+    <string name="menu_item_complaint_comment">Пожаловаться</string>
+
+    <string name="comments_complaint_success">Жалоба успешно отправлена</string>
+    <string name="comments_complaint_error">Произошла ошибка при отправке жалобы</string>
+    <string name="dialog_complaint_title">Отправить жалобу?</string>
+    <string name="dialog_complaint_negative_button_title">Отменить</string>
+    <string name="dialog_complaint_positive_button_title">Отправить</string>
+
+    <string name="loading_progress_title">Загрузка… [%1$d / 100]</string>
+    <string name="channel_notification_default_name">Основные уведомления</string>
+
+    <string name="license_link"><![CDATA[Продолжая, Вы соглашаетесь с нашими <u>Условиями использования</u> и подтверждаете, что прочли нашу Политику конфиденциальности.]]></string>
+
+    <string name="bottom_sheet_dialog_header_report_reason">Причина жалобы</string>
+
+    <string name="report_add_success">Жалоба отправлена. Модераторы проверят ваше сообщение.</string>
+    <string name="report_add_error">Произошла ошибка в процессе отправки жалобы.</string>
+
+    <string name="reason_spam">Spam</string>
+    <string name="reason_violence">Violence</string>
+    <string name="reason_child_abuse">Child abuse</string>
+    <string name="reason_illegal_drugs">Illegal drugs</string>
+    <string name="reason_personal_details">Personal details</string>
+    <string name="reason_pornography">Pornography</string>
+    <string name="reason_other">Other</string>
+
+    <string-array name="report_reasons">
+        <item>@string/reason_spam</item>
+        <item>@string/reason_violence</item>
+        <item>@string/reason_child_abuse</item>
+        <item>@string/reason_illegal_drugs</item>
+        <item>@string/reason_personal_details</item>
+        <item>@string/reason_pornography</item>
+        <item>@string/reason_other</item>
+    </string-array>
+
+    <string name="subscribers_count">Подписчики: %1$s</string>
+
+    <string name="user_blocked_success_message">Пользователь заблокирован. Теперь вы не будете получать сообщения от этого пользователя.</string>
+
 </resources>

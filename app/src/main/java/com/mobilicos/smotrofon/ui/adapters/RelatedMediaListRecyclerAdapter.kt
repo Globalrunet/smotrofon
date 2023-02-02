@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mobilicos.smotrofon.data.models.Media
 import com.mobilicos.smotrofon.databinding.RelatedVideoItemBinding
+import com.mobilicos.smotrofon.ui.media.list.OnClickMediaListElement
 import com.mobilicos.smotrofon.util.CircleTransform
 import com.mobilicos.smotrofon.util.loadImage
 import com.squareup.picasso.Picasso
@@ -28,7 +29,7 @@ class RelatedMediaListRecyclerAdapter(
     class RelatedVideoListViewHolder(private val binding: RelatedVideoItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
-        fun bindVideoItem(item: Media, pcl: OnClickMediaListElement) = with(binding) {
+        fun bindVideoItem(item: Media, pcl: OnClickMediaListElement) = with (binding) {
             poster.loadImage(item.poster)
             poster.setOnClickListener {
                 pcl.clickOnMediaListElement(item)

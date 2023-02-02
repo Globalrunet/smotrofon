@@ -1,9 +1,15 @@
 package com.mobilicos.smotrofon.ui.lessons.lessoninfo
 
+import android.animation.ValueAnimator
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.ConfigurationCompat
 import androidx.fragment.app.Fragment
@@ -11,6 +17,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.appodeal.ads.Appodeal
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.mobilicos.smotrofon.Config
+import com.mobilicos.smotrofon.R
+import com.mobilicos.smotrofon.data.repositories.LessonRepository.DownloadState
 import com.mobilicos.smotrofon.databinding.LessonInfoFragmentBinding
 import com.mobilicos.smotrofon.model.Result
 import com.mobilicos.smotrofon.ui.lessons.comments.CommentsListFragment
@@ -19,6 +33,7 @@ import com.mobilicos.smotrofon.util.visible
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
+import kotlin.random.Random
 
 
 @AndroidEntryPoint
@@ -30,10 +45,9 @@ class LessonInfoFragment : Fragment() {
     private var ident: Int = 0
     private var elementId: Int = 0
     private var initialCommentsCount: Int = 0
+    private var interstitial: InterstitialAd? = null
+    private var descriptionContainerHeight: Int = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = LessonInfoFragmentBinding.inflate(layoutInflater, container, false)
@@ -60,15 +74,23 @@ class LessonInfoFragment : Fragment() {
         if (!isJsonFileExists) {
             binding.begin.isEnabled = false
             lessonInfoViewModel.setFileToSaveFiles(FileUtil.getStorageFile(requireContext()))
-            downloadLessonInfoCollect()
-            lessonInfoViewModel.downloadLessonByIdent(ident)
+//            downloadLessonInfoCollect()
+            downloadLessonInfoStreamCollect()
+            binding.loading.visible(true)
+            binding.loadingProgress.visible(true)
+            lessonInfoViewModel.downloadLessonByIdentStream(ident)
         } else {
             updateUI()
         }
 
         binding.begin.setOnClickListener {
-            val action = LessonInfoFragmentDirections.actionLessonInfoToStepsInfo(ident = ident, objectId = elementId)
+            val action = LessonInfoFragmentDirections.actionLessonInfoToStepsInfo(
+                commentsCounter = initialCommentsCount,
+                ident = ident,
+                objectId = elementId)
+
             findNavController().navigate(action)
+            showAdmobInterstitial()
         }
 
 
@@ -91,6 +113,16 @@ class LessonInfoFragment : Fragment() {
         binding.like.setOnClickListener {
             binding.like.increase()
         }
+
+        binding.apple.setOnClickListener {
+            goToAppstoreAppPage()
+        }
+
+        binding.youtube.setOnClickListener {
+            goToYoutubePage()
+        }
+
+        initAdmobInterstitialAd()
     }
 
     private fun downloadLessonInfoCollect() {
@@ -107,6 +139,37 @@ class LessonInfoFragment : Fragment() {
                         binding.loading.visible(false)
                     }
                     else -> binding.loading.visible(false)
+                }
+            }
+        }
+    }
+
+    private fun downloadLessonInfoStreamCollect() {
+        lifecycleScope.launch {
+            lessonInfoViewModel.downloadLessonStreamResult.collect() {
+                when (it) {
+                    is DownloadState.Downloading -> {
+                        binding.loading.visible(true)
+                        binding.loadingProgress.visible(true)
+                        binding.loadingProgress.text = getString(R.string.loading_progress_title, it.progress)
+                        binding.loading.progress = it.progress
+                    }
+                    is DownloadState.Failed -> {
+                        binding.loadingProgress.visible(false)
+                        binding.loading.progress = 0
+                        binding.loading.visible(false)
+                    }
+                    DownloadState.Finished -> {
+                        updateUI()
+                        binding.loadingProgress.visible(false)
+                        binding.loading.progress = 0
+                        binding.loading.visible(false)
+                    }
+                    else -> {
+                        binding.loadingProgress.visible(false)
+                        binding.loading.progress = 0
+                        binding.loading.visible(false)
+                    }
                 }
             }
         }
@@ -140,11 +203,93 @@ class LessonInfoFragment : Fragment() {
         with (binding) {
             img.setImageBitmap(bm)
             begin.isEnabled = true
-            description.text = lessonItem?.item?.text
+            descriptionContainerHeight = binding.descriptionContainer.layoutParams.height
+            setDescription(lessonItem?.item?.text)
         }
 
         (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
         (requireActivity() as AppCompatActivity).supportActionBar?.title = lessonItem?.item?.title
+    }
+
+    private fun showAppodealInterstitial() {
+        val rand =  Random(System.nanoTime()).nextInt(0, 2)
+
+        if (rand != 0) return
+        if(Appodeal.isLoaded(Appodeal.INTERSTITIAL)) {
+            Appodeal.show(requireActivity(), Appodeal.INTERSTITIAL)
+        }
+    }
+
+    private fun showAdmobInterstitial() {
+        val rand =  Random(System.nanoTime()).nextInt(0, 2)
+
+        if (rand != 0) return
+        if (interstitial != null) interstitial?.show(requireActivity())
+    }
+
+    private fun initAdmobInterstitialAd() {
+        try {
+            val admobInterstitialId = Config.ADMOB_INTERSTITIAL_ID
+            if (admobInterstitialId.isNotEmpty()) {
+                val adRequest = AdRequest.Builder().build()
+                InterstitialAd.load(requireActivity(), admobInterstitialId, adRequest,
+                    object : InterstitialAdLoadCallback() {
+                        override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                            Log.e("AD LOADED", "LOADED")
+                            interstitial = interstitialAd
+                        }
+
+                        override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                            Log.e("AD LOADED ERROR", loadAdError.message)
+                            interstitial = null
+                        }
+                    })
+            }
+        } catch (e: Exception) {
+            e.localizedMessage?.let { Log.e("Error:", it) }
+        }
+    }
+
+    private fun setDescription(text: String?) {
+        val textLength: Int = text?.length ?: 0
+        binding.description.text = text
+
+        if (textLength > 3) {
+            binding.descriptionContainer.visibility = View.VISIBLE
+            val viewHeight: Int = when {
+                textLength > 400 -> {
+                    descriptionContainerHeight * 2
+                }
+                textLength > 200 -> {
+                    descriptionContainerHeight
+                }
+                else -> {
+                    descriptionContainerHeight / 2
+                }
+            }
+            val anim = ValueAnimator.ofInt(0, viewHeight)
+            anim.addUpdateListener { valueAnimator ->
+                val value = valueAnimator.animatedValue as Int
+                val layoutParams: ViewGroup.LayoutParams =
+                    binding.descriptionContainer.layoutParams
+                layoutParams.height = value
+                binding.descriptionContainer.layoutParams = layoutParams
+            }
+            anim.duration = 500
+            anim.start()
+        } else {
+            binding.descriptionContainer.visibility = View.GONE
+        }
+    }
+
+    private fun goToAppstoreAppPage() {
+        val url = "https://apps.apple.com/us/app/how-to-make-origami/id472936700"
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    }
+
+    private fun goToYoutubePage() {
+        val url = "https://www.youtube.com/@user-fc7xv1ci6y/videos"
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
     }
 
     override fun onStart() {

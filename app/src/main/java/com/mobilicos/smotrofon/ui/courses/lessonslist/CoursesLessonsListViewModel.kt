@@ -7,7 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.mobilicos.smotrofon.Config
-import com.mobilicos.smotrofon.data.CoursesLessonRepository
+import com.mobilicos.smotrofon.data.repositories.CoursesLessonRepository
 import com.mobilicos.smotrofon.data.models.*
 import com.mobilicos.smotrofon.data.remote.CoursesLessonsListDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel

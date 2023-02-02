@@ -1,0 +1,10 @@
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/block_user"
+        android:icon="@drawable/block"
+        android:title="@string/menu_item_block_user" />
+
+    <item android:id="@+id/complaint_comment"
+        android:icon="@drawable/admin_panel_settings"
+        android:title="@string/menu_item_complaint_comment" />
+</menu>

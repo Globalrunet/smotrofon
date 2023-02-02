@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.mobilicos.smotrofon.data.LessonStepsConverters
+import com.mobilicos.smotrofon.data.converters.LessonStepsConverters
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

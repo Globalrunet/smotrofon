@@ -41,7 +41,7 @@ class BottomSheetSimpleListBaseAdapter(private val context: Context,
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val cv: View = convertView
-            ?: LayoutInflater.from(context).inflate(R.layout.simple_list_element_with_radio, parent, false)
+            ?: LayoutInflater.from(context).inflate(R.layout.simple_list_element_with_checkbox, parent, false)
 
         val titleView = cv.findViewById<TextView>(R.id.title)
         val checkbox = cv.findViewById<CheckBox>(R.id.checkbox)

@@ -1,13 +1,11 @@
 package com.mobilicos.smotrofon.ui.lessons.lessoninfo
 
 import android.content.ContentValues.TAG
-import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mobilicos.smotrofon.Config
-import com.mobilicos.smotrofon.data.LessonRepository
-import com.mobilicos.smotrofon.data.LessonRepository.DownloadState
+import com.mobilicos.smotrofon.data.repositories.LessonRepository
+import com.mobilicos.smotrofon.data.repositories.LessonRepository.DownloadState
 import com.mobilicos.smotrofon.data.models.Item
 import com.mobilicos.smotrofon.data.models.LessonItem
 import com.mobilicos.smotrofon.model.Result

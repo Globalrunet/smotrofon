@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilicos.smotrofon.Config
 import com.mobilicos.smotrofon.R
-import com.mobilicos.smotrofon.data.VideoRepository
+import com.mobilicos.smotrofon.data.repositories.VideoRepository
 import com.mobilicos.smotrofon.data.formstate.UpdateVideoFormState
 import com.mobilicos.smotrofon.data.models.*
 import com.mobilicos.smotrofon.data.queries.EditVideoQuery

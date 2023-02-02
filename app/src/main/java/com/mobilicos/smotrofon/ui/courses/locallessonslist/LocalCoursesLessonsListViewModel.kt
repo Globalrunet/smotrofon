@@ -7,7 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.mobilicos.smotrofon.Config
-import com.mobilicos.smotrofon.data.CoursesLessonRepository
+import com.mobilicos.smotrofon.data.repositories.CoursesLessonRepository
 import com.mobilicos.smotrofon.data.local.LocalCoursesLessonsListDataSource
 import com.mobilicos.smotrofon.data.models.*
 import com.mobilicos.smotrofon.room.dao.CoursesLessonDao
@@ -16,7 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
 import javax.inject.Inject
 
 @HiltViewModel

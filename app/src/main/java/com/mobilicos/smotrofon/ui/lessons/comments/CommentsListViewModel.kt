@@ -7,7 +7,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.mobilicos.smotrofon.data.models.Comment
-import com.mobilicos.smotrofon.data.models.Media
 import com.mobilicos.smotrofon.data.queries.CommentsAddQuery
 import com.mobilicos.smotrofon.data.queries.CommentsEditQuery
 import com.mobilicos.smotrofon.data.queries.CommentsListQuery
@@ -16,7 +15,7 @@ import com.mobilicos.smotrofon.data.repositories.CommentRepository
 import com.mobilicos.smotrofon.data.responses.CommentAddResponse
 import com.mobilicos.smotrofon.data.responses.CommentEditResponse
 import com.mobilicos.smotrofon.data.responses.CommentRemoveResponse
-import com.mobilicos.smotrofon.data.sourses.CommentsListDataSource
+import com.mobilicos.smotrofon.data.remote.CommentsListDataSource
 import com.mobilicos.smotrofon.model.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi

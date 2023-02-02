@@ -4,6 +4,10 @@
     <string name="videoviewer_video_description">Views %1$d / Posted by %2$s</string>
     <string name="bottom_sheet_dialog_header">Description</string>
     <string name="subscribe_title">SUBSCRIBE</string>
+    <string name="subscribed_title">SUBSCRIBED</string>
+    <string name="subscribe_user_error">An error occurred while executing the request.</string>
+    <string name="subscribe_user_success">You have successfully subscribed to the channel.</string>
+    <string name="unsubscribe_user_success">You have successfully unsubscribed from the channel.</string>
     <string name="videos">Videos</string>
     <string name="audio">Audio</string>
     <string name="courses_lessons">Courses and Lessons</string>
@@ -128,10 +132,10 @@
         <item>@string/project_fitness</item>
     </string-array>
 
-    <string name="bottom_sheet_button_text">Share</string>
-    <string name="bottom_sheet_promo_text">Share the link to the app on social networks and get full access to all lessons without ads.</string>
-    <string name="bottom_sheet_promo_button_text">Share</string>
-    <string name="bottom_sheet_promo_title">Disable Ads</string>
+    <string name="bottom_sheet_button_text">Register</string>
+    <string name="bottom_sheet_promo_text">Be in trend! Register in the application, upload your creative videos, audios, become popular. Earn bonuses and popularity!</string>
+    <string name="bottom_sheet_promo_button_text">Register</string>
+    <string name="bottom_sheet_promo_title">Create account</string>
     <string name="login_divider_text">If there is no account, then</string>
 
     <string name="fragment_layout_comments_header">Comments: %1$d</string>
@@ -149,7 +153,7 @@
     <string name="need_account">Log in or register</string>
 
     <string name="menu_item_block_user">Block user</string>
-    <string name="menu_item_complaint_comment">Complaint</string>
+    <string name="menu_item_complaint_comment">Report</string>
 
     <string name="comments_complaint_success">Complaint sent successfully</string>
     <string name="comments_complaint_error">An error occurred while sending complaint</string>
@@ -162,4 +166,32 @@
     <string name="channel_notification_default_name">Default notification channel</string>
 
     <string name="license_link"><![CDATA[By continuing, you agree to our <u>Terms of Use</u> and acknowledge that you have read our Privacy Policy.]]></string>
+
+
+    <string name="bottom_sheet_dialog_header_report_reason">Report reason</string>
+
+    <string name="report_add_success">Report sent. A Moderators will review your report.</string>
+    <string name="report_add_error">An error occurred while sending report.</string>
+
+    <string name="reason_spam">Spam</string>
+    <string name="reason_violence">Violence</string>
+    <string name="reason_child_abuse">Child abuse</string>
+    <string name="reason_illegal_drugs">Illegal drugs</string>
+    <string name="reason_personal_details">Personal details</string>
+    <string name="reason_pornography">Pornography</string>
+    <string name="reason_other">Other</string>
+
+    <string-array name="report_reasons">
+        <item>@string/reason_spam</item>
+        <item>@string/reason_violence</item>
+        <item>@string/reason_child_abuse</item>
+        <item>@string/reason_illegal_drugs</item>
+        <item>@string/reason_personal_details</item>
+        <item>@string/reason_pornography</item>
+        <item>@string/reason_other</item>
+    </string-array>
+
+    <string name="subscribers_count">Subscribers: %1$s</string>
+
+    <string name="user_blocked_success_message">The user is blocked. Now you will not receive messages from this user.</string>
 </resources>

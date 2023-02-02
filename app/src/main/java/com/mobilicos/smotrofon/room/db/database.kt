@@ -1,14 +1,13 @@
 package com.mobilicos.smotrofon.room.db
 
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.mobilicos.smotrofon.data.CoursesLessonStepsConverters
-import com.mobilicos.smotrofon.data.DateConverter
-import com.mobilicos.smotrofon.data.LessonStepsConverters
+import com.mobilicos.smotrofon.data.converters.CoursesLessonStepsConverters
+import com.mobilicos.smotrofon.data.converters.DateConverter
+import com.mobilicos.smotrofon.data.converters.LessonStepsConverters
 import com.mobilicos.smotrofon.data.models.CourseLesson
 import com.mobilicos.smotrofon.data.models.Item
 import com.mobilicos.smotrofon.room.dao.BlockedUserDao

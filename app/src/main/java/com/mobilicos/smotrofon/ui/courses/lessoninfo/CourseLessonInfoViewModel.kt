@@ -4,7 +4,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mobilicos.smotrofon.data.CoursesLessonRepository
+import com.mobilicos.smotrofon.data.repositories.CoursesLessonRepository
 import com.mobilicos.smotrofon.data.models.CourseLesson
 import com.mobilicos.smotrofon.data.models.CourseLessonItem
 import com.mobilicos.smotrofon.model.Result

@@ -2,7 +2,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.android.application'
     id 'kotlin-android'
-    id "androidx.navigation.safeargs.kotlin"
+    id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.gms.google-services'
 }
 
@@ -16,8 +16,8 @@ android {
         applicationId "com.mobilicos.smotrofon"
         minSdk buildConfig.minSdk
         targetSdk buildConfig.targetSdk
-        versionCode 18
-        versionName "1.18"
+        versionCode 20
+        versionName "1.20"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "API_KEY", "\"{your_tmdb_api_key_here}\"")

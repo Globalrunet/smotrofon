@@ -1,7 +1,7 @@
 package com.mobilicos.smotrofon.data.models
 
 import androidx.room.*
-import com.mobilicos.smotrofon.data.CoursesLessonStepsConverters
+import com.mobilicos.smotrofon.data.converters.CoursesLessonStepsConverters
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

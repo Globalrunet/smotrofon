@@ -11,5 +11,6 @@ data class Channel (
     val image: String,
     val date_added: String,
     val videos_count: Int,
-    val audios_count: Int
+    val audios_count: Int,
+    val user_subscribers_count: Int = 0
 )

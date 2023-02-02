@@ -24,7 +24,9 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -44,6 +46,8 @@ import com.mobilicos.smotrofon.R
 import com.mobilicos.smotrofon.data.models.Comment
 import com.mobilicos.smotrofon.databinding.BottomSheetFragmentListBinding
 import com.mobilicos.smotrofon.model.Result
+import com.mobilicos.smotrofon.ui.report.BottomSheetReportFragment
+import com.mobilicos.smotrofon.ui.report.ReportViewModel
 import com.mobilicos.smotrofon.util.*
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,7 +55,6 @@ import kotlinx.coroutines.flow.collectLatest
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import kotlin.random.Random
 
 
 @AndroidEntryPoint
@@ -61,12 +64,15 @@ class CommentsListFragment : BottomSheetDialogFragment(), CommentsInterface, Opt
     lateinit var binding: BottomSheetFragmentListBinding
     override fun getTheme() = R.style.AppBottomSheetDialogTheme
     private val commentsListViewModel: CommentsListViewMode by viewModels()
+    private val reportViewModel: ReportViewModel by activityViewModels()
     private var sharedPref: SharedPreferences? = null
     private var userId: Int = 0
     private var userKey: String = ""
     private var addCommentDialog: BottomSheetDialog? = null
     private var editCommentDialog: BottomSheetDialog? = null
     private var removeAlertDialog: AlertDialog? = null
+    private val appLabel: String = "comment"
+    private val model: String = "comment"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
@@ -114,12 +120,19 @@ class CommentsListFragment : BottomSheetDialogFragment(), CommentsInterface, Opt
             addCommentCollect()
             editCommentCollect()
             removeCommentCollect()
+            addReportCollect()
 
             commentsListAdapter?.currentUser = userId
             println("ADAPTER SET USERID $userId")
 
             return root
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+
     }
 
     private var resultLauncher = registerForActivityResult(
@@ -478,6 +491,26 @@ class CommentsListFragment : BottomSheetDialogFragment(), CommentsInterface, Opt
         }
     }
 
+    private fun addReportCollect() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                reportViewModel.reportAddResult.collect {
+                    it?.let {
+                        if (it) {
+                            showMessage(activity?.getString(R.string.report_add_success))
+                        } else {
+                            showMessage(activity?.getString(R.string.report_add_error))
+                        }
+                        val v = view?.findViewById<View>(reportViewModel.reportViewId)
+                        v?.visible(false)
+                        reportViewModel.setReportAddResult(null)
+                        reportViewModel.reportViewId = -1
+                    }
+                }
+            }
+        }
+    }
+
     private fun setSwipeRefreshAdapter() {
         if (commentsListAdapter == null) {
             commentsListAdapter = CommentsListAdapter(listener = this, menuClickListener = this)
@@ -515,26 +548,21 @@ class CommentsListFragment : BottomSheetDialogFragment(), CommentsInterface, Opt
         }
     }
 
-    override fun onOptionsMenuBlockClicked(item: Comment) {
-        println("MENU CLICKED BLOCK $item")
+    override fun onOptionsMenuBlockClicked(item: Comment, view: View?) {
+        showMessage(activity?.getString(R.string.user_blocked_success_message))
     }
 
-    override fun onOptionsMenuComplaintClicked(item: Comment) {
+    override fun onOptionsMenuReportClicked(item: Comment, view: View?) {
         context?.let {
 
-            removeAlertDialog = MaterialAlertDialogBuilder(it)
-                .setTitle(resources.getString(R.string.dialog_complaint_title))
-                .setMessage(item.text.take(120))
-                .setNegativeButton(resources.getString(R.string.dialog_complaint_negative_button_title)) { dialog, which ->
+            val fragment = BottomSheetReportFragment()
 
-                }
-                .setPositiveButton(resources.getString(R.string.dialog_complaint_positive_button_title)) { dialog, which ->
-//                    commentsListViewModel.removeComment(key = userKey, comment_id = item.id)
-                }
-                .setCancelable(true)
-                .setOnDismissListener {
-                }
-                .show()
+            reportViewModel.appLabel = appLabel
+            reportViewModel.model = model
+            reportViewModel.objectId = item.id
+            reportViewModel.key = userKey
+            reportViewModel.reportViewId = view?.id ?: -1
+            fragment.show(requireActivity().supportFragmentManager, fragment.tag)
         }
     }
 

@@ -1,11 +1,13 @@
 package com.mobilicos.smotrofon.data.remote
 
 import com.mobilicos.smotrofon.data.models.UploadMediaPosterResponse
+import com.mobilicos.smotrofon.data.models.User
 import com.mobilicos.smotrofon.data.models.UserLogin
 import com.mobilicos.smotrofon.data.queries.UpdateUserPasswordQuery
 import com.mobilicos.smotrofon.data.queries.UpdateUsernamesQuery
 import com.mobilicos.smotrofon.data.queries.UploadMediaPosterQuery
 import com.mobilicos.smotrofon.data.queries.UploadUserImageQuery
+import com.mobilicos.smotrofon.data.responses.SubscribeUserResponse
 import com.mobilicos.smotrofon.data.responses.UpdateUserPasswordResponse
 import com.mobilicos.smotrofon.data.responses.UpdateUsernamesResponse
 import com.mobilicos.smotrofon.data.responses.UploadUserImageResponse
@@ -74,5 +76,19 @@ class UserRemoteDataSource @Inject constructor(private val retrofit: Retrofit): 
                 image = filePart,
                 key = keyPart)},
             defaultErrorMessage = "Error fetching Movie list")
+    }
+
+    suspend fun subscribeUser(key: String, otherUserId: Int): Result<SubscribeUserResponse> {
+        val userService = retrofit.create(UserService::class.java)
+        return getResponse(
+            request = { userService.subscribeUser(key = key, otherUserId = otherUserId) },
+            defaultErrorMessage = "Error fetching subscribe user")
+    }
+
+    suspend fun getUserData(id: Int): Result<User> {
+        val userService = retrofit.create(UserService::class.java)
+        return getResponse(
+            request = { userService.getUserData(id = id) },
+            defaultErrorMessage = "Error fetching subscribe user")
     }
 }

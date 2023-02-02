@@ -1,5 +1,6 @@
 package com.mobilicos.smotrofon.ui.lessons.comments
 
+import android.view.View
 import com.mobilicos.smotrofon.data.models.Comment
 
 interface CommentsInterface {
@@ -15,7 +16,7 @@ interface CommentsInterface {
 }
 
 interface OptionsMenuClickListener<T> {
-    fun onOptionsMenuBlockClicked(item: T)
+    fun onOptionsMenuBlockClicked(item: T, view: View? = null)
 
-    fun onOptionsMenuComplaintClicked(item: T)
+    fun onOptionsMenuReportClicked(item: T, view: View? = null)
 }

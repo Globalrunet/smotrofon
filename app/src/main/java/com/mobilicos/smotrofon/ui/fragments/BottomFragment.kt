@@ -9,7 +9,7 @@ import android.widget.FrameLayout
 import androidx.lifecycle.ViewModelProvider
 import com.mobilicos.smotrofon.R
 import com.mobilicos.smotrofon.databinding.BottomSheetLayoutBinding
-import com.mobilicos.smotrofon.ui.viewmodels.MediaViewModel
+import com.mobilicos.smotrofon.ui.media.viewer.MediaViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

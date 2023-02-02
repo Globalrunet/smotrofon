@@ -13,9 +13,9 @@
 
     <FrameLayout
         android:id="@+id/bottom_sheet"
-        style="@style/Widget.Material3.BottomSheet"
+        android:theme="@style/AppBottomSheetDialogTheme"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/white"
         android:layout_margin="0dip"
         android:padding="0dip"

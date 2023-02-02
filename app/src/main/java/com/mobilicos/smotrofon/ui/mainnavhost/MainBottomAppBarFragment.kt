@@ -8,9 +8,7 @@ import androidx.fragment.app.commit
 import com.google.android.material.snackbar.Snackbar
 import com.mobilicos.smotrofon.R
 import com.mobilicos.smotrofon.databinding.FragmentMainBottomAppBarBinding
-import com.mobilicos.smotrofon.ui.fragments.ChannelsListFragment
-import com.mobilicos.smotrofon.ui.fragments.MediaListFragment
-import com.mobilicos.smotrofon.ui.fragments.ui.MessengerFragment
+import com.mobilicos.smotrofon.ui.media.list.MediaListFragment
 
 class MainBottomAppBarFragment : Fragment() {
 

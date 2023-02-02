@@ -7,11 +7,10 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.mobilicos.smotrofon.Config
-import com.mobilicos.smotrofon.data.ProfileMediaListDataSource
-import com.mobilicos.smotrofon.data.VideoRepository
+import com.mobilicos.smotrofon.data.remote.ProfileMediaListDataSource
+import com.mobilicos.smotrofon.data.repositories.VideoRepository
 import com.mobilicos.smotrofon.data.models.*
 import com.mobilicos.smotrofon.data.queries.RemoveMediaQuery
-import com.mobilicos.smotrofon.data.queries.UploadMediaPosterQuery
 import com.mobilicos.smotrofon.data.responses.RemoveMediaResponse
 import com.mobilicos.smotrofon.model.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileVideoListViewModel @Inject constructor(
     private val retrofit: Retrofit,
-    private val repository: VideoRepository) : ViewModel() {
+    private val repository: VideoRepository
+) : ViewModel() {
 
     var searchString: String = ""
     var isRemoveDialogShown = false

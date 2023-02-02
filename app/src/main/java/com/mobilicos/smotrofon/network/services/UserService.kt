@@ -2,6 +2,7 @@ package com.mobilicos.smotrofon.network.services
 
 import com.mobilicos.smotrofon.Config
 import com.mobilicos.smotrofon.data.models.*
+import com.mobilicos.smotrofon.data.responses.SubscribeUserResponse
 import com.mobilicos.smotrofon.data.responses.UpdateUserPasswordResponse
 import com.mobilicos.smotrofon.data.responses.UpdateUsernamesResponse
 import com.mobilicos.smotrofon.data.responses.UploadUserImageResponse
@@ -51,4 +52,17 @@ interface UserService {
         @Part("k") key: RequestBody,
         @Part image: MultipartBody.Part
     ): Response<UploadUserImageResponse>
+
+    @FormUrlEncoded
+    @POST("api/user/subscribe/")
+    suspend fun subscribeUser(
+        @Field("k") key: String,
+        @Field("other_user_id") otherUserId: Int
+    ): Response<SubscribeUserResponse>
+
+    @FormUrlEncoded
+    @POST("api/user/data/")
+    suspend fun getUserData(
+        @Field("id") id: Int
+    ): Response<User>
 }

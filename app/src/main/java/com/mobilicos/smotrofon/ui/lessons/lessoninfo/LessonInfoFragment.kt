@@ -24,7 +24,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.mobilicos.smotrofon.Config
 import com.mobilicos.smotrofon.R
-import com.mobilicos.smotrofon.data.LessonRepository.DownloadState
+import com.mobilicos.smotrofon.data.repositories.LessonRepository.DownloadState
 import com.mobilicos.smotrofon.databinding.LessonInfoFragmentBinding
 import com.mobilicos.smotrofon.model.Result
 import com.mobilicos.smotrofon.ui.lessons.comments.CommentsListFragment

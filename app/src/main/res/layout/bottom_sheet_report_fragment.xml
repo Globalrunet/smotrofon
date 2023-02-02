@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:id="@+id/bottom_sheet_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="0dip"
+        android:padding="0dip">
+
+        <ListView
+            android:id="@+id/bottom_sheet_list_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="60dip"
+            android:layout_marginBottom="0dip"
+            android:paddingBottom="0dip"
+            android:divider="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dip"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dip"
+            android:layout_marginBottom="10dip"
+            android:padding="0dip"
+            android:text="@string/bottom_sheet_dialog_header_report_reason"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/icon_clear_down"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/icon_clear_down"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dip"
+            android:layout_marginTop="20dip"
+            android:layout_marginEnd="20dip"
+            android:layout_marginBottom="6dip"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:src="@mipmap/outline_clear_black_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dip"
+            app:dividerColor="@color/grey_light"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/icon_clear_down" />
+
+        <TextView
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textSize="18sp"
+            android:textColor="@color/grey"
+            android:text="@string/datset_is_empty" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/prepend_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:indicatorColor="@color/green_success"
+            app:trackColor="@color/grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/divider" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

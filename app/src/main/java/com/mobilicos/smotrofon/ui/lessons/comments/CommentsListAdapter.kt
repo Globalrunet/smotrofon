@@ -1,15 +1,17 @@
 package com.mobilicos.smotrofon.ui.lessons.comments
 
-import android.R.attr.left
-import android.R.attr.right
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.view.*
-import android.view.ViewGroup.MarginLayoutParams
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.ListPopupWindow
 import android.widget.PopupMenu
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -57,9 +59,11 @@ class CommentsListAdapter(private var listener: CommentsInterface? = null,
     inner class CommentsListViewHolder(private val binding: CommentItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        @SuppressLint("SetTextI18n", "SimpleDateFormat")
+        @SuppressLint("SetTextI18n", "SimpleDateFormat", "DiscouragedPrivateApi")
         fun bindElement(item: Comment, position: Int) {
             with(binding) {
+
+                binding.root.id = item.id
 
                 title.text = item.user_full_name
                 text.text = item.text
@@ -135,6 +139,9 @@ class CommentsListAdapter(private var listener: CommentsInterface? = null,
             if (currentUser != item.user_id) {
                 binding.more.visible(true)
                 binding.more.setOnClickListener {
+
+//                    val wrapper: Context = ContextThemeWrapper(it.context, R.style.SettingsPopupMenu)
+
                     val popup = PopupMenu(it.context, it)
                     popup.inflate(R.menu.menu_comments_options)
                     popup.gravity = Gravity.RIGHT
@@ -147,7 +154,7 @@ class CommentsListAdapter(private var listener: CommentsInterface? = null,
                                     return true
                                 }
                                 R.id.complaint_comment -> {
-                                    menuClickListener?.onOptionsMenuComplaintClicked(item = item)
+                                    menuClickListener?.onOptionsMenuReportClicked(item = item, view = binding.root)
                                     return true
                                 }
                             }

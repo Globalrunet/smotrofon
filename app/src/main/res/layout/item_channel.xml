@@ -2,6 +2,7 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,99 +11,93 @@
     android:layout_marginStart="8dp"
     android:layout_marginEnd="8dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:orientation="vertical">
+        android:layout_marginStart="8dip"
+        android:layout_marginTop="8dip"
+        android:layout_marginBottom="8dip"
+        android:layout_marginEnd="0dip">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_marginTop="0dp"
+            android:id="@+id/image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:srcCompat="@mipmap/ic_launcher"
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/content_channel_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/title"
+            android:textSize="16sp"
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginStart="8dip"
+            android:text=""
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            app:layout_constraintStart_toEndOf="@+id/image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/more" />
 
-            <!-- Media -->
-            <ImageView
-                android:layout_marginTop="0dp"
-                android:id="@+id/image"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                app:srcCompat="@mipmap/ic_launcher"
-                android:scaleType="fitCenter"
-                android:contentDescription="@string/content_channel_icon"
-                />
+        <TextView
+            android:id="@+id/user_info"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="0dip"
+            android:layout_marginBottom="0dip"
+            android:layout_marginStart="10dip"
+            android:layout_marginEnd="10dip"
+            android:gravity="start"
+            android:textColor="@color/grey"
+            android:textSize="13sp"
+            tools:text=""
+            tools:ignore="RtlHardcoded"
+            app:layout_constraintStart_toEndOf="@+id/image"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            app:layout_constraintEnd_toStartOf="@+id/more" />
 
-            <LinearLayout
+        <ImageButton
+            style="Widget.App.Button.OutlinedButton.IconOnly"
+            android:id="@+id/more"
+            android:padding="4dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dip"
+            android:layout_marginEnd="0dip"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/more_vert_24px"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="UnknownIdInLayout" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dip"
+            app:layout_constraintStart_toEndOf="@+id/image"
+            app:layout_constraintTop_toBottomOf="@+id/user_info"
+            app:layout_constraintEnd_toStartOf="@+id/more">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/video_element"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="0dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="8dp">
+                style="@style/Widget.Material3.Chip.Assist"
+                android:textColor="@color/black"
+                android:text="@string/videos"/>
 
-                <!-- Title, secondary and supporting text -->
-                <TextView
-                    android:id="@+id/title"
-                    android:textSize="18sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
-                    />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/audio_element"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Chip.Assist"
+                android:textColor="@color/black"
+                android:text="@string/audio"/>
 
-                <com.google.android.material.chip.ChipGroup
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/video_element"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/Widget.Material3.Chip.Assist"
-                        android:textColor="@color/black"
-                        android:text="@string/videos"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/audio_element"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/Widget.Material3.Chip.Assist"
-                        android:textColor="@color/black"
-                        android:text="@string/audio"/>
-
-                </com.google.android.material.chip.ChipGroup>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Buttons -->
-<!--        <LinearLayout-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginBottom="0dp"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            android:orientation="horizontal">-->
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/button_video"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginEnd="8dp"-->
-<!--                android:text="@string/videos"-->
-<!--                android:textSize="16sp"-->
-<!--                style="@style/Widget.Material3.Button"-->
-<!--                />-->
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/button_audio"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/audio"-->
-<!--                android:textSize="16sp"-->
-<!--                style="@style/Widget.Material3.Button.OutlinedButton"-->
-<!--                />-->
-<!--        </LinearLayout>-->
-
-    </LinearLayout>
-
+        </com.google.android.material.chip.ChipGroup>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
